@@ -27,7 +27,9 @@ export const loadUser = createAsyncThunk(
   }
 );
 export const logout = createAsyncThunk("auth/logout", async () => {
-  authService.logout();
+  await authService.logout();
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("userName");
 });
 const storeToke = (token) => {
   console.log(token);
