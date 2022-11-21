@@ -17,7 +17,7 @@ const NavHeader = () => {
         <Container>
           {user?.roleId === 1 ?
             <Navbar.Brand href="/" className="nav-branch">
-              Nhóm 1
+              Nhóm 7
             </Navbar.Brand> :
             <></>
           }
@@ -26,6 +26,18 @@ const NavHeader = () => {
             <Nav className="me-auto">
               <NavLink to="/" exact className="nav-link">
                 DashBoard
+              </NavLink>
+              <NavLink to="/demographic" exact className="nav-link">
+                Nhân khẩu
+              </NavLink>
+              <NavLink to="/household" exact className="nav-link">
+                Hộ khẩu
+              </NavLink>
+              <NavLink to="/tabernacle" exact className="nav-link">
+                Tạm trú
+              </NavLink>
+              <NavLink to="/absent" exact className="nav-link">
+                Tạm vắng
               </NavLink>
               <NavLink to="/about" exact className="nav-link">
                 About

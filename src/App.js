@@ -5,12 +5,20 @@ import "react-toastify/dist/ReactToastify.css";
 import DashBoard from "./pages/DashBoard";
 import StyledNavbar from "./components/StyledNavbar";
 import Login from "./pages/Login";
+import DemographicPage from "./pages/DemographicPage";
+import HouseholdPage from "./pages/HouseholdPage";
+import TabernaclePage from "./pages/TabernaclePage";
+import AbsentPage from "./pages/AbsentPage";
 import { Triangle } from "react-loader-spinner";
 import About from "./pages/About";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./Redux/authSlice";
 import { useEffect, useState } from "react";
 import UnAuth from "./Routes/unAuthRoute";
+import demographicRoute from "./Routes/DemographicRoute";
+import householdRoute from "./Routes/HouseholdRoute";
+import tabernacleRoute from "./Routes/TabernacleRoute";
+import absentRoute from "./Routes/AbsentRoute";
 import { Switch } from "react-router-dom";
 import NotfoundPage from "./pages/NotfoundPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
@@ -33,6 +41,10 @@ function App() {
           </div>
           <Switch>
             <Route path="/" exact component={DashBoard} />
+            <Route path="/demographic" exact component={DemographicPage} />
+            <Route path="/household" exact component={HouseholdPage} />
+            <Route path="/tabernacle" exact component={TabernaclePage} />
+            <Route path="/absent" exact component={AbsentPage}/>
             <Route path="/login" exact component={Login} />
             <Route path="/about" exact component={About} />
             <Route path="/change-password" exact component={ChangePasswordPage} />
