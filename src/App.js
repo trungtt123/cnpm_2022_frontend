@@ -8,6 +8,7 @@ import Sidebar from "./components/Sidebarver";
 import Login from "./pages/Login";
 import DemographicPage from "./pages/DemographicPage";
 import HouseholdPage from "./pages/HouseholdPage";
+import HouseholdAddPage from "./pages/HouseholdAddPage";
 import TabernaclePage from "./pages/TabernaclePage";
 import AbsentPage from "./pages/AbsentPage";
 import { Triangle } from "react-loader-spinner";
@@ -32,9 +33,9 @@ function App() {
   const [component, setComponent] = useState();
   
   const getCurrentView = () => {
-    if (isAuthenticated === false) {
-      return <UnAuth />;
-    } else
+    // if (isAuthenticated === false) {
+    //   return <UnAuth />;
+    // } else
       return (
         <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -47,6 +48,7 @@ function App() {
             <Route path="/" exact component={DashBoard} />
             <Route path="/demographic" exact component={DemographicPage} />
             <Route path="/household" exact component={HouseholdPage} />
+            <Route path="/household-add" exact component={HouseholdAddPage} />
             <Route path="/tabernacle" exact component={TabernaclePage} />
             <Route path="/absent" exact component={AbsentPage}/>
             <Route path="/login" exact component={Login} />

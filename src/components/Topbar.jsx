@@ -11,7 +11,8 @@ const Topbar = () => {
   return (
     <Box display="flex" justifyContent="flex-end" p={2}>
       <Box display="flex">
-      {user && isAuthenticated === true ? (
+      {user || isAuthenticated === false ? // user && isAuthenticated
+      (
         <Dropdown>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
           Tài khoản
