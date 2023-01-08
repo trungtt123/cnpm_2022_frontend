@@ -11,8 +11,7 @@ const HouseholdAddPage = () => {
     console.log(values);
   };
 
-  const init = ["Nhân khẩu 1", "Nhân khẩu 2", "Nhân khẩu 3" ]
-
+  
   return (
     <Box m="20px">
       <Header title="Tạo hộ khẩu" />
@@ -91,27 +90,24 @@ const HouseholdAddPage = () => {
                 helperText={touched.ngaycap && errors.ngaycap}
                 sx={{ gridColumn: "span 4" }}
               />
-               {
-                init.map((ini) => (
-                  <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label = {ini}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  //value=""
-                  //name=""
-                  //error={!!touched.ngaycap && !!errors.ngaycap}
-                  //helperText={touched.ngaycap && errors.ngaycap}
-                  sx={{ gridColumn: "span 2" }}
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Ngày cấp"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.ngaycap}
+                name="ngaycap"
+                error={!!touched.ngaycap && !!errors.ngaycap}
+                helperText={touched.ngaycap && errors.ngaycap}
+                sx={{ gridColumn: "span 4" }}
               />
-                ))
-              }
+              
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Tạo hộ khẩu mới 
               </Button>
             </Box>
           </form>

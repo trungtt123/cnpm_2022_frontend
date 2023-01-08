@@ -8,13 +8,22 @@ import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from "react-router-dom";
-import React, { useState, useMemo } from "react";
-
+import React, { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import detailroomSlice from "../Redux/detailRoomSlice";
+import { isDetailVisibleSelector } from "../Redux/selector";
 
 const HouseholdPage = () => {
+
+  const dispatch = useDispatch();
+
   const theme = useTheme();
+  const isDetailVisible = useSelector (isDetailVisibleSelector)
   const colors = tokens(theme.palette.mode);
-  
+  const handleDetail = () => {
+    dispatch (detailroomSlice.actions.isDetailVisibleChange())
+    console.log (isDetailVisible)
+  }  
   
 
   const columns = useMemo ( () => [
@@ -61,7 +70,7 @@ const HouseholdPage = () => {
       align: "center",
       renderCell: () =>
       <div>
-        <Link to =""><DeleteIcon /></Link>
+       <DeleteIcon />
       </div>
     },
     {
@@ -71,7 +80,7 @@ const HouseholdPage = () => {
       align: "center",
       renderCell: () =>
       <div>
-        <Link to =""><VisibilityIcon /></Link>
+        <VisibilityIcon onClick= {handleDetail}/>
       </div>
     }
   ]);

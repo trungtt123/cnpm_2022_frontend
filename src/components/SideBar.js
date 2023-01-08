@@ -39,7 +39,7 @@ export const SidebarData = [
       },
       {
         title: 'Thêm hộ khẩu',
-        path: '/household/household-add',
+        path: 'household-add',
         icon: <AiIcons.AiFillPlusCircle />
       }
     ]
