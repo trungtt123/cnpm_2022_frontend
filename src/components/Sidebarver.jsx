@@ -52,10 +52,11 @@ const Sidebar = () => {
         },
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
-        },
+        }
       }}
+     
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar collapsed={isCollapsed}  >
         <Menu iconShape="square">
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -93,7 +94,7 @@ const Sidebar = () => {
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
-              
+
               <Box textAlign="center">
                 <Typography
                   variant="h2"
@@ -111,30 +112,30 @@ const Sidebar = () => {
           )}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-          {SidebarData.map((item, index) => {
-              if(item.subNav){
-                return (              
-                    <SubMenu
-                    key={index} 
+            {SidebarData.map((item, index) => {
+              if (item.subNav) {
+                return (
+                  <SubMenu
+                    key={index}
                     title={item.title}
                     icon={item.icon}>
-                      {item.subNav.map((itm, indx) => {
-                        return (
+                    {item.subNav.map((itm, indx) => {
+                      return (
                         <Item key={indx}
-                        to={itm.path}
-                        icon={itm.icon}
-                        title={itm.title}></Item> 
-                        );
-                      })}
-                    </SubMenu>                                                   
+                          to={itm.path}
+                          icon={itm.icon}
+                          title={itm.title}></Item>
+                      );
+                    })}
+                  </SubMenu>
                 );
-              }else{
+              } else {
                 return (
                   <Item
-                  title={item.title} 
-                  key={index} 
-                  to={item.path}
-                  icon={item.icon}
+                    title={item.title}
+                    key={index}
+                    to={item.path}
+                    icon={item.icon}
                   ></Item>
                 );
               }

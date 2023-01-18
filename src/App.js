@@ -22,7 +22,17 @@ import { ColorModeContext, useMode } from "./theme";
 import { Switch } from "react-router-dom";
 import NotfoundPage from "./pages/NotfoundPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
+import AddRoomModal from "./components/AddRoomModals";
+import { setupServer } from "./fakeAPI";
+import HouseholdPutPage from "./pages/HouseholdPutPage";
+import DemographicAddPage from "./pages/DemographicAddPage";
 function App() {
+
+  setupServer ();
+  useEffect (() => {
+    fetch ('api/todos').then(res => console.log(res.todos[0]))
+  }, [])
+
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -31,36 +41,39 @@ function App() {
   const [isSidebar, setIsSidebar] = useState(true);
 
   const [component, setComponent] = useState();
-  
+
   const getCurrentView = () => {
     // if (isAuthenticated === false) {
     //   return <UnAuth />;
     // } else
-      return (
-        <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="app">
-          <Sidebar isSidebar={isSidebar} />
-          <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
-            <Switch>
-            <Route path="/" exact component={DashBoard} />
-            <Route path="/demographic" exact component={DemographicPage} />
-            <Route path="/household" exact component={HouseholdPage} />
-            <Route path="/household-add" exact component={HouseholdAddPage} />
-            <Route path="/tabernacle" exact component={TabernaclePage} />
-            <Route path="/absent" exact component={AbsentPage}/>
-            <Route path="/login" exact component={Login} />
-            <Route path="/about" exact component={About} />
-            <Route path="/change-password" exact component={ChangePasswordPage} />
-            <Route path="*" component={NotfoundPage} />
-          </Switch>
-          </main>
-        </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
-      );
+    return (
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <div className="app" >
+            <Sidebar isSidebar={isSidebar} />
+            <main className="content">
+              <Topbar setIsSidebar={setIsSidebar} />
+              <Switch>
+                <Route path="/" exact component={DashBoard} />
+                <Route path="/demographic" exact component={DemographicPage} />
+                <Route path="/demographic-add" exact component={DemographicAddPage} />
+                <Route path="/household" exact component={HouseholdPage} />
+                <Route path="/household-add" exact component={HouseholdAddPage} />
+                <Route path="/household-put" exact component={HouseholdPutPage} />
+                <Route path="/tabernacle" exact component={TabernaclePage} />
+                <Route path="/absent" exact component={AbsentPage} />
+                <Route path="/login" exact component={Login} />
+                <Route path="/about" exact component={About} />
+                <Route path="/change-password" exact component={ChangePasswordPage} />
+                <Route path="*" component={NotfoundPage} />
+              </Switch>
+            </main>
+              <AddRoomModal />
+          </div>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    );
   };
   useEffect(() => {
     dispatch(loadUser());

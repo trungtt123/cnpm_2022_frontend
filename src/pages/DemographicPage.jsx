@@ -12,81 +12,61 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import detailroomSlice from "../Redux/detailRoomSlice";
 import { isDetailVisibleSelector } from "../Redux/selector";
+import { mockDataDemographic } from "../Services/MOCK/demographicdata";
 
-const HouseholdPage = () => {
+const DemographicPage = () => {
 
   const dispatch = useDispatch();
 
   const theme = useTheme();
   const isDetailVisible = useSelector (isDetailVisibleSelector)
   const colors = tokens(theme.palette.mode);
-  const handleDetail = () => {
-    dispatch (detailroomSlice.actions.isDetailVisibleChange())
-    console.log (isDetailVisible)
-  } 
+//   const handleDetail = () => {
+//     dispatch (detailroomSlice.actions.isDetailVisibleChange())
+//     console.log (isDetailVisible)
+//   } 
   const columns = useMemo ( () => [
-    { field: "maho", 
-      headerName: "Mã hộ", 
+    { field: "maNhanKhau", 
+      headerName: "Mã nhân khẩu", 
       flex: 0.5 
     },
-    { field: "sothanhvien",
-      headerName: "Số thành viên" ,
-      flex: 0.5,
+    { field: "hoTen",
+      headerName: "Họ tên" ,
+      flex: 0.75,
     },
     {
-      field: "diachi",
-      headerName: "Địa chỉ thường chú",
-      flex: 1,
+      field: "canCuocCongDan",
+      headerName: "Căn cước công dân",
+      type: 'string',
+      flex: 0.75,
     },
     {
-      field: "noicap",
-      headerName: "Nơi cấp",
+      field: "ngaySinh",
+      headerName: "Ngày Sinh",
       flex: 1,
-      type: 'number',
+      type: 'date',
       headerAlign: "left",
       align: "left",
     },
     {
-      field: "ngaycap",
-      headerName: "Ngày cấp",
+      field: "danToc",
+      headerName: "Dân tộc",
       flex: 0.5,
     },
     {
-      field: "put",
-      headerName: "",
-      flex: 0.25,
-      align: "center",
-      renderCell: (param) =>
-      <div>
-        <TrackChangesIcon onClick= {() => console.log (param.row.maho)}/>
-      </div>
-    },
-    {
-      field: "delete",
-      headerName: "",
-      flex: 0.25,
-      align: "center",
-      renderCell: () =>
-      <div>
-       <DeleteIcon />
-      </div>
-    },
-    {
-      field: "details",
-      headerName: "",
-      flex: 0.25,
-      align: "center",
-      renderCell: () =>
-      <div>
-        <VisibilityIcon onClick= {handleDetail}/>
-      </div>
-    }
+        field: "trangThai",
+        headerName: "Trạng Thái",
+        type: 'number',
+        flex: 0.5,
+        align: 'left',
+      },
+    
   ]);
 
   return (
     <Box m="20px">
       <Header
-        title="Quản lý hộ khẩu"
+        title="Quản lý Nhân khẩu"
       />
       <Box
         m="40px 0 0 0"
@@ -121,8 +101,8 @@ const HouseholdPage = () => {
         }}
       >
         <DataGrid
-          getRowId={(row) => row.maho}
-          rows={mockDataHousehold}
+          getRowId={(row) => row.maNhanKhau}
+          rows={mockDataDemographic}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
@@ -131,4 +111,4 @@ const HouseholdPage = () => {
   );
 };
 
-export default HouseholdPage;
+export default DemographicPage;

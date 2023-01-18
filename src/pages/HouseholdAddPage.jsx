@@ -94,11 +94,11 @@ const HouseholdAddPage = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Ngày cấp"
+                label="Danh sách mã nhân khẩu"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.ngaycap}
-                name="ngaycap"
+                value={values.manhankhau}
+                name="manhankhau"
                 error={!!touched.ngaycap && !!errors.ngaycap}
                 helperText={touched.ngaycap && errors.ngaycap}
                 sx={{ gridColumn: "span 4" }}
@@ -122,12 +122,16 @@ const checkoutSchema = yup.object().shape({
   diachi: yup.string().required("required"),
   noicap: yup.string().required("required"),
   ngaycap: yup.string().required("required"),
+  manhankhau: yup.string().required("required"),
 });
 const initialValues = {
   mahk: "",
   diachi: "",
   nơicap: "",
   ngaycap: "",
+  manhankhau: "",
+
 };
 
 export default HouseholdAddPage;
+

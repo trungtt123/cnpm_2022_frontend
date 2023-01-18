@@ -13,6 +13,5 @@ export const mockDataHousehold =  [
     diachi: "Số 2, Đại Cồ Việt",
     noicap: "Công an quận Hai Bà Trưng",
     ngaycap: "22/11/2022",
-  },
-  
+  }, 
 ];

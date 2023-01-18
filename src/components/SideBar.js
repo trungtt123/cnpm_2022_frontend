@@ -22,7 +22,7 @@ export const SidebarData = [
       },
       {
         title: 'Thêm nhân khẩu',
-        path: '/demographic/demographic-add',
+        path: '/demographic-add',
         icon: <AiIcons.AiFillPlusCircle />
       }
     ]
