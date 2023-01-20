@@ -11,35 +11,56 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import detailroomSlice from "../Redux/detailRoomSlice";
-import { isDetailVisibleSelector } from "../Redux/selector";
+import { isDetailVisibleSelector, isSelectedIdSelector } from "../Redux/selector";
+import { deleteHouseHold } from "../Services/API/householdService";
+import axios from "../setups/custom_axios";
 
 const HouseholdPage = () => {
 
   const dispatch = useDispatch();
 
   const theme = useTheme();
-  const isDetailVisible = useSelector (isDetailVisibleSelector)
   const colors = tokens(theme.palette.mode);
+  
   const handleDetail = () => {
     dispatch (detailroomSlice.actions.isDetailVisibleChange())
-    console.log (isDetailVisible)
-  } 
+  }
+  const handleSelectedId = (Id) => {
+    dispatch (detailroomSlice.actions.isSelectedIdChange(Id));
+  }
+  
+  const isDetailVisible = useSelector (isDetailVisibleSelector)
+  const [dataHouseHold, setDataHouseHold] = useState ([]);
+  const [isDelete, setIsDelete] = useState (false);
+
+  useEffect (
+    async () => {
+      try {
+          const response = await axios.get (`/ho-khau/danh-sach-ho-khau`);
+          setDataHouseHold (() => response.data);
+      } catch (error) {
+          console.log (error);
+      }
+
+      return 
+    }, [isDelete])
+  
   const columns = useMemo ( () => [
-    { field: "maho", 
+    { field: "maHoKhau", 
       headerName: "Mã hộ", 
       flex: 0.5 
     },
-    { field: "sothanhvien",
+    { field: "soThanhVien",
       headerName: "Số thành viên" ,
       flex: 0.5,
     },
     {
-      field: "diachi",
+      field: "diaChi",
       headerName: "Địa chỉ thường chú",
       flex: 1,
     },
     {
-      field: "noicap",
+      field: "noiCap",
       headerName: "Nơi cấp",
       flex: 1,
       type: 'number',
@@ -47,9 +68,10 @@ const HouseholdPage = () => {
       align: "left",
     },
     {
-      field: "ngaycap",
+      field: "ngayCap",
       headerName: "Ngày cấp",
       flex: 0.5,
+      type: 'date'
     },
     {
       field: "put",
@@ -57,28 +79,38 @@ const HouseholdPage = () => {
       flex: 0.25,
       align: "center",
       renderCell: (param) =>
-      <div>
-        <TrackChangesIcon onClick= {() => console.log (param.row.maho)}/>
-      </div>
+      {
+        const link = param.row.maHoKhau + "/edit";
+        return <Link to = {link}><TrackChangesIcon />  </Link>
+      }
     },
     {
       field: "delete",
       headerName: "",
       flex: 0.25,
       align: "center",
-      renderCell: () =>
+      renderCell: (param) =>
       <div>
-       <DeleteIcon />
+       <DeleteIcon onClick = {() => {
+        //deleteHouseHold(param.row.maHoKhau);
+        //setIsDelete (!isDelete);
+        console.log  ()
+      }
+        } />
       </div>
     },
+    /// 
     {
       field: "details",
       headerName: "",
       flex: 0.25,
       align: "center",
-      renderCell: () =>
+      renderCell: (param) =>
       <div>
-        <VisibilityIcon onClick= {handleDetail}/>
+        <VisibilityIcon onClick= {() => {
+          handleSelectedId (param.row.maHoKhau);
+          handleDetail ();
+        }}/>
       </div>
     }
   ]);
@@ -121,8 +153,9 @@ const HouseholdPage = () => {
         }}
       >
         <DataGrid
-          getRowId={(row) => row.maho}
-          rows={mockDataHousehold}
+          getRowId={(row) => row.maHoKhau}
+          // response.data
+          rows={dataHouseHold}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

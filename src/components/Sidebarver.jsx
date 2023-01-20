@@ -52,7 +52,8 @@ const Sidebar = () => {
         },
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
-        }
+        },
+        minHeight: '609px'
       }}
      
     >

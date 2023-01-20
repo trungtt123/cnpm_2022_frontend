@@ -23,15 +23,9 @@ import { Switch } from "react-router-dom";
 import NotfoundPage from "./pages/NotfoundPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
 import AddRoomModal from "./components/AddRoomModals";
-import { setupServer } from "./fakeAPI";
 import HouseholdPutPage from "./pages/HouseholdPutPage";
 import DemographicAddPage from "./pages/DemographicAddPage";
 function App() {
-
-  setupServer ();
-  useEffect (() => {
-    fetch ('api/todos').then(res => console.log(res.todos[0]))
-  }, [])
 
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -43,9 +37,9 @@ function App() {
   const [component, setComponent] = useState();
 
   const getCurrentView = () => {
-    // if (isAuthenticated === false) {
-    //   return <UnAuth />;
-    // } else
+    if (isAuthenticated === false) {
+      return <UnAuth />;
+    } else
     return (
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
@@ -60,7 +54,7 @@ function App() {
                 <Route path="/demographic-add" exact component={DemographicAddPage} />
                 <Route path="/household" exact component={HouseholdPage} />
                 <Route path="/household-add" exact component={HouseholdAddPage} />
-                <Route path="/household-put" exact component={HouseholdPutPage} />
+                <Route path="/:id/edit" exact component={HouseholdPutPage} />
                 <Route path="/tabernacle" exact component={TabernaclePage} />
                 <Route path="/absent" exact component={AbsentPage} />
                 <Route path="/login" exact component={Login} />

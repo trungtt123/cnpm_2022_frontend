@@ -4,8 +4,12 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../components/Header";
 import SnackbarContent from '@mui/material/SnackbarContent';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "../setups/custom_axios"
 
+
+//
 const testform = [1, 2];
 const HouseholdPutPage = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -14,13 +18,28 @@ const HouseholdPutPage = () => {
     console.log(values);
   }
 
-  const validate1 = (value) => {
-    let error;
-    if (!value) {
-      error = 'Required';
+  const [detailHouseholdData, setdetailHouseHoldData] = useState({})
+  const [danhSachNhanKhau, setDanhSachNhanKhau] = useState([])
+  const { id } = useParams();
+
+  const fetchapi = async () => {
+    try {
+      if (!id) return;
+      const response = await axios.get(`ho-khau?maHoKhau=${id}`)
+      setdetailHouseHoldData(response.data)
+      setDanhSachNhanKhau(response.data.danhSachNhanKhau);
+    } catch (error) {
+      console.log(error);
     }
-    return error;
   }
+
+  useEffect(() => {
+    fetchapi();
+  },[]);
+
+  console.log(detailHouseholdData);
+  console.log(danhSachNhanKhau);
+  
 
   let x = 0;
 
@@ -30,7 +49,26 @@ const HouseholdPutPage = () => {
 
       <Formik
         onSubmit={handleFormSubmit}
-        initialValues={initialValues}
+        initialValues={{
+          diachi: "",
+          noicap: "",
+          ngaycap: "",
+          danhSachnhankhau:
+            testform.map(test => (
+              {
+                maNhanKhau: "",
+                hoTen: "",
+                canCuocCongDan: "",
+                ngaySinh: new Date(),
+                noiSinh: "",
+                danToc: "",
+                ngheNghiep: "",
+                quanHe: "",
+                trangThai: new Number(),
+                ghiChu: "",
+              }
+            ))
+        }}
         validationSchema={checkoutSchema}
       >
         {({
@@ -56,9 +94,12 @@ const HouseholdPutPage = () => {
                 fullWidth
                 variant="filled"
                 type="text"
+                defaultValue={detailHouseholdData.diaChiThuongTru}
                 label="Địa chỉ"
                 onBlur={handleBlur}
                 onChange={handleChange}
+                D
+                value={values.diachi}
                 name="diachi"
                 error={!!touched.diachi && !!errors.diachi}
                 helperText={touched.diachi && errors.diachi}
@@ -131,6 +172,7 @@ const HouseholdPutPage = () => {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.danhSachnhankhau[x - 1].maNhanKhau}
+                        //error={!!touched.danhSachnhankhau[x-1].maNhanKhau && !!errors.ngaycap}
                         name={maNhanKhauName}
                         sx={{ gridColumn: "span 0.25" }}
                       />
@@ -159,7 +201,7 @@ const HouseholdPutPage = () => {
                       <TextField
                         fullWidth
                         variant="filled"
-                        type="text"
+                        type="date"
                         label="Ngày sinh"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -214,7 +256,7 @@ const HouseholdPutPage = () => {
                       <TextField
                         fullWidth
                         variant="filled"
-                        type="text"
+                        type="number"
                         label="Trạng thái"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -239,8 +281,10 @@ const HouseholdPutPage = () => {
               }
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Tạo hộ khẩu mới
+              <Button type="submit" color="secondary" variant="contained"
+                onClick={() => console.log("dấ")}
+              >
+                Thay đổi hộ khẩu mới 
               </Button>
             </Box>
           </form>
@@ -248,6 +292,7 @@ const HouseholdPutPage = () => {
       </Formik>
     </Box>
   );
+
 };
 
 const checkoutSchema = yup.object().shape({
@@ -258,35 +303,17 @@ const checkoutSchema = yup.object().shape({
     maNhanKhau: yup.string().required("required"),
     hoTen: yup.string().required("required"),
     canCuocCongDan: yup.string().required("required"),
-    ngaySinh: yup.string().required("required"),
+    ngaySinh: yup.date().required("required"),
     noiSinh: yup.string().required("required"),
     danToc: yup.string().required("required"),
     ngheNghiep: yup.string().required("required"),
     quanHe: yup.string().required("required"),
-    trangThai: yup.string().required("required"),
+    trangThai: yup.number().required("required"),
     ghiChu: yup.string().required("required"),
   }))
 });
-const initialValues = {
-  diachi: "",
-  noicap: "",
-  ngaycap: "",
-  danhSachnhankhau:
-    testform.map(test => (
-      {
-        maNhanKhau: "",
-        hoTen: "",
-        canCuocCongDan: "",
-        ngaySinh: "",
-        noiSinh: "",
-        danToc: "",
-        ngheNghiep: "",
-        quanHe: "",
-        trangThai: "",
-        ghiChu: "",
-      }
-    ))
-};
+
+
 
 export default HouseholdPutPage;
 
