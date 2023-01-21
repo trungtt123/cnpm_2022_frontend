@@ -7,10 +7,11 @@ import SnackbarContent from '@mui/material/SnackbarContent';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../setups/custom_axios"
+import { formatDate } from "../Services/API/formatDateService";
 
 
 //
-const testform = [1, 2];
+const testform = [1,2];
 const HouseholdPutPage = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
@@ -18,42 +19,40 @@ const HouseholdPutPage = () => {
     console.log(values);
   }
 
+  const [saveData, setSaveData] = useState(null)
   const [detailHouseholdData, setdetailHouseHoldData] = useState({})
   const [danhSachNhanKhau, setDanhSachNhanKhau] = useState([])
   const { id } = useParams();
-
+  
   const fetchapi = async () => {
     try {
       if (!id) return;
       const response = await axios.get(`ho-khau?maHoKhau=${id}`)
       setdetailHouseHoldData(response.data)
       setDanhSachNhanKhau(response.data.danhSachNhanKhau);
+      
     } catch (error) {
       console.log(error);
     }
   }
-
+  
   useEffect(() => {
     fetchapi();
-  },[]);
-
-  console.log(detailHouseholdData);
-  console.log(danhSachNhanKhau);
+  }, []);
   
-
   let x = 0;
 
   return (
     <Box m="20px">
-      <Header title="Tạo hộ khẩu" />
+      <Header title="Thay đổi hộ khẩu" />
 
       <Formik
         onSubmit={handleFormSubmit}
-        initialValues={{
-          diachi: "",
-          noicap: "",
-          ngaycap: "",
-          danhSachnhankhau:
+        initialValues={saveData || {
+          diaChiThuongTru: "",
+          noiCap: "",
+          ngayCap: "",
+          danhSachNhanKhau:
             testform.map(test => (
               {
                 maNhanKhau: "",
@@ -64,11 +63,13 @@ const HouseholdPutPage = () => {
                 danToc: "",
                 ngheNghiep: "",
                 quanHe: "",
-                trangThai: new Number(),
+                trangThai: 1,
                 ghiChu: "",
               }
             ))
         }}
+
+        enableReinitialize
         validationSchema={checkoutSchema}
       >
         {({
@@ -94,15 +95,13 @@ const HouseholdPutPage = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                defaultValue={detailHouseholdData.diaChiThuongTru}
                 label="Địa chỉ"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                D
-                value={values.diachi}
-                name="diachi"
-                error={!!touched.diachi && !!errors.diachi}
-                helperText={touched.diachi && errors.diachi}
+                value={values.diaChiThuongTru}
+                name= "diaChiThuongTru"
+                error={!!touched.diaChiThuongTru && !!errors.diaChiThuongTru}
+                helperText={touched.diaChiThuongTru && errors.diaChiThuongTru}
                 sx={{ gridColumn: "span 4" }}
 
               />
@@ -114,41 +113,41 @@ const HouseholdPutPage = () => {
                 label="Nơi cấp"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.noicap}
-                name="noicap"
-                error={!!touched.noicap && !!errors.noicap}
-                helperText={touched.noicap && errors.noicap}
+                value={values.noiCap}
+                name="noiCap"
+                error={!!touched.noiCap && !!errors.noiCap}
+                helperText={touched.noiCap && errors.noiCap}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
+                type="date"
                 label="Ngày cấp"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.ngaycap}
-                name="ngaycap"
-                error={!!touched.ngaycap && !!errors.ngaycap}
-                helperText={touched.ngaycap && errors.ngaycap}
+                value={formatDate (values.ngayCap)}
+                name="ngayCap"
+                error={!!touched.ngayCap && !!errors.ngayCap}
+                helperText={touched.ngayCap && errors.ngayCap}
                 sx={{ gridColumn: "span 4" }}
               />
 
               {
-                testform.map((test) => {
-                  if (x >= testform.length) x = 0;
+                danhSachNhanKhau.map((test) => {
+                  if (x >= danhSachNhanKhau.length) x = 0;
                   x = x + 1
                   const mess = 'Nhân khẩu thứ ' + x;
-                  const maNhanKhauName = 'danhSachnhankhau[' + (x - 1) + '].maNhanKhau';
-                  const hoTenName = 'danhSachnhankhau[' + (x - 1) + '].hoTen';
-                  const canCuocCongDanName = 'danhSachnhankhau[' + (x - 1) + '].canCuocCongDan';
-                  const ngaySinhName = 'danhSachnhankhau[' + (x - 1) + '].ngaySinh';
-                  const noiSinhName = 'danhSachnhankhau[' + (x - 1) + '].noiSinh';
-                  const danTocName = 'danhSachnhankhau[' + (x - 1) + '].danToc';
-                  const ngheNghiepName = 'danhSachnhankhau[' + (x - 1) + '].ngheNghiep';
-                  const quanHeName = 'danhSachnhankhau[' + (x - 1) + '].quanHe';
-                  const trangThaiName = 'danhSachnhankhau[' + (x - 1) + '].trangThai';
-                  const ghiChuName = 'danhSachnhankhau[' + (x - 1) + '].ghiChu';
+                  const maNhanKhauName = 'danhSachNhanKhau[' + (x - 1) + '].maNhanKhau';
+                  const hoTenName = 'danhSachNhanKhau[' + (x - 1) + '].hoTen';
+                  const canCuocCongDanName = 'danhSachNhanKhau[' + (x - 1) + '].canCuocCongDan';
+                  const ngaySinhName = 'danhSachNhanKhau[' + (x - 1) + '].ngaySinh';
+                  const noiSinhName = 'danhSachNhanKhau[' + (x - 1) + '].noiSinh';
+                  const danTocName = 'danhSachNhanKhau[' + (x - 1) + '].danToc';
+                  const ngheNghiepName = 'danhSachNhanKhau[' + (x - 1) + '].ngheNghiep';
+                  const quanHeName = 'danhSachNhanKhau[' + (x - 1) + '].quanHe';
+                  const trangThaiName = 'danhSachNhanKhau[' + (x - 1) + '].trangThai';
+                  const ghiChuName = 'danhSachNhanKhau[' + (x - 1) + '].ghiChu';
 
                   return (
                     <Box
@@ -171,8 +170,8 @@ const HouseholdPutPage = () => {
                         label="Mã Nhân Khẩu"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].maNhanKhau}
-                        //error={!!touched.danhSachnhankhau[x-1].maNhanKhau && !!errors.ngaycap}
+                        value={values.danhSachNhanKhau[x - 1].maNhanKhau}
+                        //error={!!touched.danhSachNhanKhau[x-1].maNhanKhau && !!errors.ngayCap}
                         name={maNhanKhauName}
                         sx={{ gridColumn: "span 0.25" }}
                       />
@@ -183,7 +182,7 @@ const HouseholdPutPage = () => {
                         label="Họ tên"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].hoTen}
+                        value={values.danhSachNhanKhau[x - 1].hoTen}
                         name={hoTenName}
                         sx={{ gridColumn: "span 2" }}
                       />
@@ -194,7 +193,7 @@ const HouseholdPutPage = () => {
                         label="Căn cước công dân"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].canCuocCongDan}
+                        value={values.danhSachNhanKhau[x - 1].canCuocCongDan}
                         name={canCuocCongDanName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -205,7 +204,7 @@ const HouseholdPutPage = () => {
                         label="Ngày sinh"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].ngaySinh}
+                        value={formatDate (values.danhSachNhanKhau[x - 1].ngaySinh)}
                         name={ngaySinhName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -216,7 +215,7 @@ const HouseholdPutPage = () => {
                         label="Nơi sinh"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].noiSinh}
+                        value={values.danhSachNhanKhau[x - 1].noiSinh}
                         name={noiSinhName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -227,7 +226,7 @@ const HouseholdPutPage = () => {
                         label="Dân tộc"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].danToc}
+                        value={values.danhSachNhanKhau[x - 1].danToc}
                         name={danTocName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -238,7 +237,7 @@ const HouseholdPutPage = () => {
                         label="Nghề nghiệp"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].ngheNghiep}
+                        value={values.danhSachNhanKhau[x - 1].ngheNghiep}
                         name={ngheNghiepName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -249,7 +248,7 @@ const HouseholdPutPage = () => {
                         label="Quan hệ"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].quanHe}
+                        value={values.danhSachNhanKhau[x - 1].quanHe}
                         name={quanHeName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -260,7 +259,7 @@ const HouseholdPutPage = () => {
                         label="Trạng thái"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].trangThai}
+                        value={values.danhSachNhanKhau[x - 1].trangThai}
                         name={trangThaiName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -271,7 +270,7 @@ const HouseholdPutPage = () => {
                         label="Ghi chú"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.danhSachnhankhau[x - 1].ghiChu}
+                        value={values.danhSachNhanKhau[x - 1].ghiChu}
                         name={ghiChuName}
                         sx={{ gridColumn: "span 1" }}
                       />
@@ -280,13 +279,44 @@ const HouseholdPutPage = () => {
                 })
               }
             </Box>
+
+            <Box display="flex" justifyContent="end" mt="20px">
+
+              <Button type="submit" color="secondary" variant="contained"
+                onClick={() => setSaveData({
+                  diaChiThuongTru: detailHouseholdData.diaChiThuongTru,
+                  noiCap: detailHouseholdData.noiCap,
+                  ngayCap: detailHouseholdData.ngayCap,
+                  danhSachNhanKhau:
+                    danhSachNhanKhau.map(nhanKhau => (
+                      {
+                        maNhanKhau: nhanKhau.maNhanKhau,
+                        hoTen: nhanKhau.hoTen,
+                        canCuocCongDan: nhanKhau.canCuocCongDan,
+                        ngaySinh: nhanKhau.ngaySinh,
+                        noiSinh: nhanKhau.noiSinh,
+                        danToc: nhanKhau.danToc,
+                        ngheNghiep: nhanKhau.ngheNghiep,
+                        quanHe: nhanKhau.quanHe,
+                        trangThai: nhanKhau.trangThai,
+                        ghiChu: nhanKhau.ghiChu,
+                      }
+                    ))
+                })}
+              >
+                Lấy dữ liệu từ id:{id}
+              </Button>
+
+            </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained"
-                onClick={() => console.log("dấ")}
-              >
-                Thay đổi hộ khẩu mới 
+>
+                Thay đổi hộ khẩu mới
               </Button>
             </Box>
+
+
+
           </form>
         )}
       </Formik>
@@ -296,9 +326,9 @@ const HouseholdPutPage = () => {
 };
 
 const checkoutSchema = yup.object().shape({
-  diachi: yup.string().required("required"),
-  noicap: yup.string().required("required"),
-  ngaycap: yup.string().required("required"),
+  diaChiThuongTru: yup.string().required("required"),
+  noiCap: yup.string().required("required"),
+  ngayCap: yup.string().required("required"),
   danhSachnhankhau: yup.array().of(yup.object().shape({
     maNhanKhau: yup.string().required("required"),
     hoTen: yup.string().required("required"),
