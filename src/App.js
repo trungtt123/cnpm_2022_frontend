@@ -1,5 +1,5 @@
 import "./App.scss";
-import { BrowserRouter, Route, Router, useHistory } from "react-router-dom";
+import { BrowserRouter, Route, useHistory } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashBoard from "./pages/DashBoard";
@@ -8,8 +8,8 @@ import Sidebar from "./components/Sidebarver";
 import Login from "./pages/Login";
 import DemographicPage from "./pages/DemographicPage";
 import HouseholdPage from "./pages/HouseholdPage";
-import TabernaclePage from "./pages/TabernaclePage";
-import AbsentPage from "./pages/AbsentPage";
+import TabernaclePage from "./pages/Tabernacle/TabernaclePage";
+import AbsentPage from "./pages/Absent/AbsentPage";
 import { Triangle } from "react-loader-spinner";
 import About from "./pages/About";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,7 +47,7 @@ function App() {
             <Route path="/" exact component={DashBoard} />
             <Route path="/demographic" exact component={DemographicPage} />
             <Route path="/household" exact component={HouseholdPage} />
-            <Route path="/tabernacle" exact component={TabernaclePage} />
+            <Route path="/tabernacle"exact component={TabernaclePage}/>
             <Route path="/absent" exact component={AbsentPage}/>
             <Route path="/login" exact component={Login} />
             <Route path="/about" exact component={About} />

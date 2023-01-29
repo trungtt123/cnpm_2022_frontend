@@ -8,16 +8,16 @@ import { SidebarData } from './SideBar';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useDispatch, useSelector } from "react-redux";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <MenuItem
-      active={selected === title}
+     
       style={{
         color: colors.grey[100],
       }}
-      onClick={() => setSelected(title)}
+      
       icon={icon}
     >
       <Typography>{title}</Typography>
@@ -30,7 +30,6 @@ const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   console.log("user", user);

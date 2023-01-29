@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { logout } from "../Redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Topbar = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const Topbar = () => {
       {user && isAuthenticated === true ? (
         <Dropdown>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Tài khoản
+          {<AccountCircleIcon/>}
         </Dropdown.Toggle>
   
         <Dropdown.Menu>

@@ -41,12 +41,13 @@ export const SidebarData = [
   {
     title: 'Quản lý tạm vắng',
     path: '/absent',
-    icon: <BsIcons.BsPersonDashFill />
+    icon: <BsIcons.BsPersonDashFill />,
 
   },
   {
     title: 'About',
     path: '/about',
     icon: <SiIcons.SiAboutdotme />
-  }
+  },
+  
 ];
