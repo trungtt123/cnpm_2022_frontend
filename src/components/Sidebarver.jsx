@@ -54,7 +54,6 @@ const Sidebar = () => {
       }
     }, []
   )
-
   return (
     <div>
 
@@ -128,7 +127,7 @@ const Sidebar = () => {
                   {user?.firstName + " " + user?.lastName}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Trưởng ban
+                  {user?.roleId === 1 ? 'Tổ trưởng' : user?.roleId === 2 ? 'Tổ phó' : 'Kế toán' }
                 </Typography>
               </Box>
             </Box>
