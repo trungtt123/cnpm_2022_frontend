@@ -94,7 +94,9 @@ const HouseholdAddPage = () => {
             "diaChiThuongTru": values.diaChiThuongTru,
             "noiCap": values.noiCap,
             "ngayCap": values.ngayCap,
-            "danhSachNhanKhau": values.danhSachNhanKhau,
+            "danhSachNhanKhau": values.danhSachNhanKhau.map((nhankhau) => {
+              return nhankhau.value;
+            }),
             "version" : initialValues.version,
             })
 
@@ -175,7 +177,7 @@ const HouseholdAddPage = () => {
               <div style={{ width: '500px' }}>
                 <Select
                   name="danhSachNhanKhau"
-                  options={dataNhanKhau}
+                  options={dataNhanKhau.concat(values.danhSachNhanKhau)}
                   component={CustomSelect}
                   placeholder="Danh sách mã nhân khẩu "
                   isMulti={true}
