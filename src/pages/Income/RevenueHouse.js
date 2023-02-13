@@ -10,28 +10,48 @@ import Button from '@mui/material/Button';
 import { useEffect, useMemo, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllRevenue, setRevenueItem, fetchRevenueItem } from "../../Redux/revenueSlice";
+import { fetchAllRevenue, setRevenueItemID, setRevenueHouseID } from "../../Redux/revenueSlice";
 import dayjs from "dayjs";
 import CreateRevenue from "./CreateRevenue";
 import EditRevenue from "./EditRevenue";
 import revenueService from "../../Services/API/revenueService";
 import { Link } from "react-router-dom";
+import PayRevenue from "./PayRevenue";
 
 const RevenueHouse = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const dispatch = useDispatch();
-    const [searchID, setSearchID] = useState('');
     const [openPopup, setOpenPopup] = useState(false);
+    const maKhoanThu = useSelector((state) => state.revenue.maKhoanThu);
     const revenueHouse = useSelector((state) => state.revenue.revenueHouse);
+    const revenueHouseID = useSelector((state) => state.revenue.revenueHouseID);
     const isLoadingHouse = useSelector((state) => state.revenue.isLoadingHouse);
 
     const [data, setData] = useState([]);
 
+    const PayButton = ({ maKhoanThuTheoHo, openPopup, setOpenPopup, maKhoanThu }) => {
+        const theme = useTheme();
+        const colors = tokens(theme.palette.mode);
+    
+        return (
+          <Button onClick={() => {
+            dispatch(setRevenueItemID(maKhoanThu));
+            dispatch(setRevenueHouseID(maKhoanThuTheoHo))
+            setOpenPopup(!openPopup);
+          }}
+            startIcon={<ManageAccountsRoundedIcon />}
+            variant="contained"
+            style={{ backgroundColor: colors.greenAccent[700], border: "none" }}>Thanh toán
+          </Button>
+        );
+      }
+
     useEffect(() => {
-    }, [revenueHouse, isLoadingHouse, searchID]);
+    }, [revenueHouse, isLoadingHouse, revenueHouseID, maKhoanThu]);
     const columns = useMemo(() => [
         { field: "maKhoanThu", headerName: "Mã khoản thu", flex: 0.5 },
+        { field: "maKhoanThuTheoHo", headerName: "Mã khoản thu theo hộ", flex: 1 },
         {
             field: "tenKhoanThu",
             headerName: "Tên khoản thu",
@@ -42,7 +62,7 @@ const RevenueHouse = () => {
             field: "soTien",
             headerName: "Số tiền cần thu",
             flex: 1,
-            valueGetter: (param) => { return (param.row.soTien + " đồng") },
+            valueGetter: (param) => { return ((param.row.soTien ? param.row.soTien : "0") + " đồng") },
         },
         {
             field: "soTienDaNop",
@@ -56,20 +76,21 @@ const RevenueHouse = () => {
             flex: 1,
             valueGetter: (param) => {
                 if (param.row.soTien == null) return ("Ủng hộ");
-                return ((param.row.soTienDaNop >= param.row.soTien) ? "Đã nộp đủ" : "Còn thiếu");
+                return ((param.row.soTienDaNop >= param.row.soTien) ? "Đã nộp đủ" : ("Còn thiếu " + (param.row.soTien - param.row.soTienDaNop) + " đồng"));
             },
         },
+        {
+            field: "thanhToan",
+            headerName: "Thanh toán",
+            flex: 1,
+            renderCell: (param) => <PayButton  openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={param.row.maKhoanThuTheoHo} maKhoanThu={param.row.maKhoanThu}/>,
+          },
     ]);
     return (
         <Box m="20px">
             <Header
                 title="DANH SÁCH KHOẢN THU THEO HỘ"
             />
-            <Button onClick={() => {
-                setOpenPopup(!openPopup);
-            }}
-                color="secondary" variant="contained" style={{ fontWeight: "bold" }}>
-                Thanh toán</Button>
             <Box
                 m="40px 0 0 0"
                 height="75vh"
@@ -78,7 +99,6 @@ const RevenueHouse = () => {
                         border: "none",
                     },
                     "& .MuiDataGrid-cell": {
-                        borderBottom: "none",
                     },
                     "& .name-column--cell": {
                         color: colors.greenAccent[300],
@@ -110,7 +130,7 @@ const RevenueHouse = () => {
 
                 }}
             >
-
+                <PayRevenue openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={revenueHouseID} maKhoanThu ={maKhoanThu}/>
                 {isLoadingHouse ? (
                     <div className="loading-container d-flex flex-column align-items-center ustify-content-center">
                         <Triangle

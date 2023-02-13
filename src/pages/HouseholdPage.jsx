@@ -14,6 +14,10 @@ import detailroomSlice from "../Redux/detailRoomSlice";
 import { isDetailVisibleSelector, isSelectedIdSelector } from "../Redux/selector";
 import { deleteHouseHold } from "../Services/API/householdService";
 import axios from "../setups/custom_axios";
+import dayjs from "dayjs";
+import Button from "@mui/material/Button";
+import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
+import { fetchAllRevenueHouse } from "../Redux/revenueSlice";
 
 const HouseholdPage = () => {
 
@@ -44,6 +48,22 @@ const HouseholdPage = () => {
       return
     }, [isDelete])
 
+  const ListButton = ({ maHoKhau }) => {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
+    return (
+      <Link to={"/revenue-house"}>
+      <Button onClick={() => {
+        dispatch(fetchAllRevenueHouse(maHoKhau));
+      }}
+        startIcon={<ManageAccountsRoundedIcon />}
+        variant="contained"
+        style={{ backgroundColor: colors.greenAccent[700], border: "none" }}>Khoản thu
+      </Button>
+      </Link>
+    );
+  }
 
   const columns = useMemo(() => [
     {
@@ -57,7 +77,7 @@ const HouseholdPage = () => {
       flex: 0.5,
     },
     {
-      field: "diaChi",
+      field: "diaChiThuongTru",
       headerName: "Địa chỉ thường chú",
       flex: 1,
     },
@@ -73,17 +93,17 @@ const HouseholdPage = () => {
       field: "ngayCap",
       headerName: "Ngày cấp",
       flex: 0.5,
-      type: 'date'
+      type: 'date',
+      valueGetter: (param) => { return dayjs(param.row.ngayCap).format('DD/MM/YYYY') },
     },
     {
       field: "put",
       headerName: "",
       flex: 0.25,
       align: "center",
-      renderCell: (param) =>
-      {
+      renderCell: (param) => {
         const link = param.row.maHoKhau + "/edit";
-        return <Link to = {link}><TrackChangesIcon /> </Link>
+        return <Link to={link}><TrackChangesIcon /> </Link>
       }
     },
     {
@@ -95,7 +115,7 @@ const HouseholdPage = () => {
         <div>
           <DeleteIcon onClick={() => {
             deleteHouseHold(param.row.maHoKhau);
-            setIsDelete (!isDelete);
+            setIsDelete(!isDelete);
             console.log()
           }
           } />
@@ -114,6 +134,12 @@ const HouseholdPage = () => {
             handleDetail();
           }} />
         </div>
+    },
+    {
+      field: "khoanThu",
+      headerName: "",
+      flex: 0.6,
+      renderCell: (param) =>  <ListButton maHoKhau={param.row.maHoKhau}></ListButton>,
     }
   ]);
 
@@ -130,7 +156,6 @@ const HouseholdPage = () => {
             border: "none",
           },
           "& .MuiDataGrid-cell": {
-            borderBottom: "none",
           },
           "& .name-column--cell": {
             color: colors.greenAccent[300],
@@ -152,6 +177,10 @@ const HouseholdPage = () => {
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
             color: `${colors.grey[100]} !important`,
           },
+          "& .MuiTablePagination-displayedRows, .MuiTablePagination-selectLabel": {
+            "margin-top": "1em",
+            "margin-bottom": "1em"
+          }
         }}
       >
         <DataGrid

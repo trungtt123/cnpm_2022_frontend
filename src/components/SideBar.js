@@ -63,11 +63,6 @@ export const SidebarData =  [
     icon: <AiIcons.AiFillMoneyCollect />
   },
   {
-    title: 'Khoản thu theo hộ',
-    path: '/revenue-house',
-    icon: <FaIcons.FaMoneyBillWave />
-  },
-  {
     title: 'About',
     path: '/about',
     icon: <SiIcons.SiAboutdotme />

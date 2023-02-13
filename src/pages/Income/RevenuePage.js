@@ -128,7 +128,6 @@ const RevenuePage = () => {
             border: "none",
           },
           "& .MuiDataGrid-cell": {
-            borderBottom: "none",
           },
           "& .name-column--cell": {
             color: colors.greenAccent[300],

@@ -36,6 +36,7 @@ export const fetchAllRevenueHouse = createAsyncThunk(
 )
 export const setRevenueItemID = createAction("setRevenueItemID");
 export const setRevenueItemType = createAction("setRevenueItemType");
+export const setRevenueHouseID = createAction("setRevenueHouseID");
 export const resetRevenueSlice = createAction("resetRevenueSlice");
 
 const initialState = {
@@ -47,6 +48,7 @@ const initialState = {
     loaiKhoanThu: null,
     revenueHouse: [],
     isLoadingHouse: false,
+    revenueHouseID: null,
 };
 const revenueSlice = createSlice({
     name: "revenue",
@@ -97,6 +99,9 @@ const revenueSlice = createSlice({
         },
         [setRevenueItemType] : (state, action) => {
             state.loaiKhoanThu = action?.payload;
+        },
+        [setRevenueHouseID] : (state, action) => {
+            state.revenueHouseID = action?.payload;
         },
         [resetRevenueSlice]: () => initialState
     }
