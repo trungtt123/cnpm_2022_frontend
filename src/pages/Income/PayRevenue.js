@@ -17,12 +17,13 @@ import dayjs from "dayjs";
 const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soTienCanThu }) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const [soTienCanTra, setSoTienCanTra] = useState(0);
+    const [soTienDaNop, setSoTienDaNop] = useState(0);
     const dispatch = useDispatch();
     const handleFormSubmit = (values) => {
         revenueService.payRevenue({
             maKhoanThuTheoHo: values.maKhoanThuTheoHo,
             tenHoaDon: values.tenHoaDon,
-            soTienDaNop: values.soTienDaNop > values.soTienCanThu ? values.soTienCanThu : values.soTienDaNop 
+            soTienDaNop: soTienDaNop > values.soTienCanThu ? values.soTienCanThu : soTienDaNop 
         }).then(mes => {
             alert(mes.message);
             setOpenPopup(!openPopup);
@@ -32,9 +33,11 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
     const initialValues = {
         maKhoanThuTheoHo: maKhoanThuTheoHo,
         tenHoaDon: "",
-        soTienDaNop: 0,
+        soTienDaNop: soTienDaNop,
         soTienCanThu: soTienCanThu,
     };
+    useEffect(() => {
+    }, [soTienDaNop]);
     return (
         <Dialog open={openPopup} maxWidth="md" style={{ backgroundColor: "transparent" }}
             sx={{
@@ -101,12 +104,14 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
                                     />
                                     <TextField
                                         variant="filled"
-                                        type = "number"
                                         label="Số tiền nộp"
+                                        type = "number"
                                         onBlur={handleBlur}
                                         name="soTienDaNop"
                                         onChange={handleChange}
-                                        defaultValue={values.soTienDaNop}
+                                        value={values.soTienDaNop}
+                                        error={!!touched.soTienDaNop && !!errors.soTienDaNop}
+                                        helperText={touched.soTienDaNop && errors.soTienDaNop}
                                         sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
                                     </TextField>
                                     <TextField
@@ -115,7 +120,10 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
                                         type = "number"
                                         label="Số tiền trả lại"
                                         name="soTienTraLai"
-                                        defaultValue={Math.max(0, values.soTienDaNop - values.soTienCanThu)}
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                        value={Math.max(0, values.soTienDaNop - values.soTienCanThu)}
                                         sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
                                     </TextField>
                                 </Box>
@@ -139,6 +147,8 @@ const idRegEXp = /^\d+$/;
 
 const checkoutSchema = yup.object().shape({
     tenHoaDon: yup.string().required("Bạn chưa điền thông tin"),
+    soTienDaNop: yup.number().required("Bạn chưa điền thông tin").min(0, "Số tiền không hợp lệ"),
+    
 });
 
 export default PayRevenue;

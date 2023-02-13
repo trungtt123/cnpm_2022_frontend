@@ -46,7 +46,7 @@ export const SidebarData =  [
 
   },
   {
-    title: 'Danh sách khoản thu',
+    title: 'Quản lý khoản thu',
     path: '/revenue',
     icon: <AiIcons.AiFillMoneyCollect />
   },
