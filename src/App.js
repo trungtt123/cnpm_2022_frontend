@@ -29,9 +29,6 @@ import AddRoomModal from "./components/AddRoomModals";
 import HouseholdPutPage from "./pages/HouseholdPutPage";
 
 function App() {
-
-  
-
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -40,40 +37,42 @@ function App() {
   const [isSidebar, setIsSidebar] = useState(true);
 
   const [component, setComponent] = useState();
-
   const getCurrentView = () => {
     if (isAuthenticated === false) {
       return <UnAuth />;
     } else
       return (
         <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="app">
-          <Sidebar isSidebar={isSidebar} />
-          <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
-            <Switch>
-            <Route path="/" exact component={DashBoard} />
-            <Route path="/demographic" exact component={DemographicPage} />
-            <Route path="/household" exact component={HouseholdPage} />
-            <Route path="/household-add" exact component={HouseholdAddPage} />
-            <Route path="/:id/edit" exact component={HouseholdPutPage} />
-            <Route path="/tabernacle"exact component={TabernaclePage}/>
-            <Route path="/absent" exact component={AbsentPage}/>
-            <Route path="/login" exact component={Login} />
-            <Route path="/about" exact component={About} />
-            <Route path="/change-password" exact component={ChangePasswordPage} />
-            <Route path="/revenue" exact component={RevenuePage} />
-            <Route path="/revenue-item" exact component={RevenueItem}/>
-            <Route path="/revenue-house" exact component={RevenueHouse}/>
-            <Route path="*" component={NotfoundPage} />
-          </Switch>
-          </main>
-          <AddRoomModal />
-        </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <div className="app">
+              <Sidebar isSidebar={isSidebar} />
+              <main className="content">
+                <Topbar setIsSidebar={setIsSidebar} />
+                <Switch>
+                  <Route path="/" exact component={DashBoard} />
+                  {
+                    (user?.roleId === 1 || user?.roleId == 2) && <><Route path="/demographic" exact component={DemographicPage} />
+                      <Route path="/household" exact component={HouseholdPage} />
+                      <Route path="/household-add" exact component={HouseholdAddPage} />
+                      <Route path="/:id/edit" exact component={HouseholdPutPage} />
+                      <Route path="/tabernacle" exact component={TabernaclePage} />
+                      <Route path="/absent" exact component={AbsentPage} />
+                    </>
+                  }
+                  <Route path="/login" exact component={Login} />
+                  <Route path="/about" exact component={About} />
+                  <Route path="/change-password" exact component={ChangePasswordPage} />
+                  <Route path="/revenue" exact component={RevenuePage} />
+                  <Route path="/revenue-item" exact component={RevenueItem} />
+                  <Route path="/revenue-house" exact component={RevenueHouse} />
+                  <Route path="*" component={NotfoundPage} />
+                </Switch>
+              </main>
+              <AddRoomModal />
+            </div>
+          </ThemeProvider>
+        </ColorModeContext.Provider>
       );
   };
   useEffect(() => {

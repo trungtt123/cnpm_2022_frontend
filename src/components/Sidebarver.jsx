@@ -4,7 +4,7 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../theme";
-import { SidebarData } from './SideBar';
+import { SidebarDataAdmin, SidebarDataKeToan } from './SideBar';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../setups/custom_axios"
@@ -14,11 +14,11 @@ const Item = ({ title, to, icon, selected, setSelected, data }) => {
   const colors = tokens(theme.palette.mode);
   return (
     <MenuItem
-     
+
       style={{
         color: colors.grey[100],
       }}
-      
+
       icon={icon}
     >
       <Typography>{title}</Typography>
@@ -33,9 +33,20 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  console.log("user", user);
+  // console.log("user", user);
   const [dataNhanKhau, setDataNhanKhau] = useState([]);
-
+  const [SidebarData, setSidebarData] = useState();
+  useEffect(() => {
+    if (user) {
+      if (user.roleId === 1 || user.roleId === 2) {
+        
+        setSidebarData(SidebarDataAdmin);
+      }
+      else {
+        setSidebarData(SidebarDataKeToan);
+      }
+    }
+  }, [user])
   useEffect(
     async () => {
       try {
@@ -57,138 +68,138 @@ const Sidebar = () => {
   return (
     <div>
 
-    <Box
-      sx={{
-        "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-        },
-        "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
-        },
-        "& .pro-menu-item.active": {
-          color: "#6870fa !important",
-        },
-        minHeight: '609px'
-      }}
+      <Box
+        sx={{
+          "& .pro-sidebar-inner": {
+            background: `${colors.primary[400]} !important`,
+          },
+          "& .pro-icon-wrapper": {
+            backgroundColor: "transparent !important",
+          },
+          "& .pro-inner-item": {
+            padding: "5px 35px 5px 20px !important",
+          },
+          "& .pro-inner-item:hover": {
+            color: "#868dfb !important",
+          },
+          "& .pro-menu-item.active": {
+            color: "#6870fa !important",
+          },
+          minHeight: '609px'
+        }}
 
-    >
-      <ProSidebar collapsed={isCollapsed}  >
-        <Menu iconShape="square">
-          <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{
-              margin: "10px 0 20px 0",
-              color: colors.grey[100],
-            }}
-          >
+      >
+        <ProSidebar collapsed={isCollapsed}  >
+          <Menu iconShape="square">
+            <MenuItem
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+              style={{
+                margin: "10px 0 20px 0",
+                color: colors.grey[100],
+              }}
+            >
+              {!isCollapsed && (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  ml="15px"
+                >
+                  <Typography variant="h3" color={colors.grey[100]}>
+                    ADMIN
+                  </Typography>
+                  <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <MenuOutlinedIcon />
+                  </IconButton>
+                </Box>
+              )}
+            </MenuItem>
+
             {!isCollapsed && (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
-              >
-                <Typography variant="h3" color={colors.grey[100]}>
-                  ADMIN
-                </Typography>
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
-                </IconButton>
+              <Box mb="25px">
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <img
+                    alt="profile-user"
+                    width="100px"
+                    height="100px"
+                    src={`../../avatar.jpg`}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                </Box>
+
+                <Box textAlign="center">
+                  <Typography
+                    variant="h2"
+                    color={colors.grey[100]}
+                    fontWeight="bold"
+                    sx={{ m: "10px 0 0 0" }}
+                  >
+                    {user?.firstName + " " + user?.lastName}
+                  </Typography>
+                  <Typography variant="h5" color={colors.greenAccent[500]}>
+                    {user?.roleId === 1 ? 'Tổ trưởng' : user?.roleId === 2 ? 'Tổ phó' : 'Kế toán'}
+                  </Typography>
+                </Box>
               </Box>
             )}
-          </MenuItem>
 
-          {!isCollapsed && (
-            <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={`../../avatar.jpg`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box>
-
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  {user?.firstName + " " + user?.lastName}
-                </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {user?.roleId === 1 ? 'Tổ trưởng' : user?.roleId === 2 ? 'Tổ phó' : 'Kế toán' }
-                </Typography>
-              </Box>
-            </Box>
-          )}
-
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            {SidebarData.map((item, index) => {
-              if (item.subNav) {
-                return (
-                  <SubMenu
-                    key={index}
-                    title={item.title}
-                    icon={item.icon}>
-                    {item.subNav.map((itm, indx) => {
-                      if (!(itm.path === 'household-add')) {
-                        return (
-                          <Item key={indx}
-                            to={itm.path}
-                            icon={itm.icon}
-                            title={itm.title}></Item>
-                        );
-                      } else {
-                        return (
-                          <Item key={indx}
-                            to={{
-                              pathname: itm.path,
-                              state: dataNhanKhau
-                            }}
-                            data={itm.data}
-                            icon={itm.icon}
-                            title={itm.title}
-                          ></Item>
-                        )
-                      }
-                    })}
-                  </SubMenu>
-                );
-              } else {
-                if (!item.data) {
+            <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+              {SidebarData?.map((item, index) => {
+                if (item.subNav) {
                   return (
-                    <Item key={index}
-                      to={item.path}
-                      icon={item.icon}
-                      title={item.title}></Item>
+                    <SubMenu
+                      key={index}
+                      title={item.title}
+                      icon={item.icon}>
+                      {item.subNav.map((itm, indx) => {
+                        if (!(itm.path === 'household-add')) {
+                          return (
+                            <Item key={indx}
+                              to={itm.path}
+                              icon={itm.icon}
+                              title={itm.title}></Item>
+                          );
+                        } else {
+                          return (
+                            <Item key={indx}
+                              to={{
+                                pathname: itm.path,
+                                state: dataNhanKhau
+                              }}
+                              data={itm.data}
+                              icon={itm.icon}
+                              title={itm.title}
+                            ></Item>
+                          )
+                        }
+                      })}
+                    </SubMenu>
                   );
                 } else {
-                  return (
-                    <Item key={index}
-                      to={item.path}
-                      icon={item.icon}
-                      title={item.title}
-                      data={item.data}
-                    ></Item>
-                  )
+                  if (!item.data) {
+                    return (
+                      <Item key={index}
+                        to={item.path}
+                        icon={item.icon}
+                        title={item.title}></Item>
+                    );
+                  } else {
+                    return (
+                      <Item key={index}
+                        to={item.path}
+                        icon={item.icon}
+                        title={item.title}
+                        data={item.data}
+                      ></Item>
+                    )
+                  }
                 }
-              }
-            })}
-          </Box>
-        </Menu>
-      </ProSidebar>
-    </Box>
+              })}
+            </Box>
+          </Menu>
+        </ProSidebar>
+      </Box>
     </div>
   );
 };

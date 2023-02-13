@@ -5,7 +5,7 @@ import * as SiIcons from "react-icons/si";
 import * as BsIcons from "react-icons/bs";
 
 
-export const SidebarData =  [
+export const SidebarDataAdmin =  [
   {
     title: 'Home',
     path: "/",
@@ -44,6 +44,25 @@ export const SidebarData =  [
     path: '/absent',
     icon: <BsIcons.BsPersonDashFill />,
 
+  },
+  {
+    title: 'Quản lý khoản thu',
+    path: '/revenue',
+    icon: <AiIcons.AiFillMoneyCollect />
+  },
+  {
+    title: 'About',
+    path: '/about',
+    icon: <SiIcons.SiAboutdotme />
+  },
+  
+];
+
+export const SidebarDataKeToan =  [
+  {
+    title: 'Home',
+    path: "/",
+    icon: <AiIcons.AiFillHome/>
   },
   {
     title: 'Quản lý khoản thu',

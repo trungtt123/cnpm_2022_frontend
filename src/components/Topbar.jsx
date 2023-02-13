@@ -4,11 +4,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { logout } from "../Redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import { useHistory } from "react-router-dom";
 const Topbar = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
+  const history = useHistory();
   return (
     <Box display="flex" justifyContent="flex-end" p={2}>
       <Box display="flex">
@@ -22,7 +22,10 @@ const Topbar = () => {
         <Dropdown.Menu>
           <Dropdown.Item href="/change-password">Đổi mật khẩu</Dropdown.Item>
           <Dropdown.Item>
-          <span onClick={() => dispatch(logout())}>Đăng xuất</span>
+          <span onClick={() => {
+            // history.push('/')
+            dispatch(logout());
+          }}>Đăng xuất</span>
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
