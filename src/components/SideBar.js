@@ -15,18 +15,6 @@ export const SidebarData =  [
     title: 'Quản lý nhân khẩu',
     path: "/demographic",
     icon: <BsIcons.BsFillPersonLinesFill/>,
-    subNav: [
-      {
-        title: 'Danh sách nhân khẩu',
-        path: '/demographic',
-        icon: <FaIcons.FaListAlt />
-      },
-      {
-        title: 'Thêm nhân khẩu',
-        path: '/demographic-add',
-        icon: <AiIcons.AiFillPlusCircle />
-      }
-    ]
   },
   {
     title: 'Quản lý hộ khẩu',

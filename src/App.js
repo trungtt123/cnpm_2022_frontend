@@ -6,7 +6,7 @@ import DashBoard from "./pages/DashBoard";
 import Topbar from "./components/Topbar";
 import Sidebar from "./components/Sidebarver";
 import Login from "./pages/Login";
-import DemographicPage from "./pages/DemographicPage";
+import DemographicPage from "./pages/Demographic/DemographicPage";
 import HouseholdPage from "./pages/HouseholdPage";
 import TabernaclePage from "./pages/Tabernacle/TabernaclePage";
 import AbsentPage from "./pages/Absent/AbsentPage";
@@ -27,7 +27,6 @@ import RevenueItem from "./pages/Income/RevenueItem";
 import RevenueHouse from "./pages/Income/RevenueHouse";
 import AddRoomModal from "./components/AddRoomModals";
 import HouseholdPutPage from "./pages/HouseholdPutPage";
-import DemographicAddPage from "./pages/DemographicAddPage";
 
 function App() {
 
@@ -57,7 +56,6 @@ function App() {
             <Switch>
             <Route path="/" exact component={DashBoard} />
             <Route path="/demographic" exact component={DemographicPage} />
-            <Route path="/demographic-add" exact component={DemographicAddPage} />
             <Route path="/household" exact component={HouseholdPage} />
             <Route path="/household-add" exact component={HouseholdAddPage} />
             <Route path="/:id/edit" exact component={HouseholdPutPage} />
