@@ -4,7 +4,8 @@ import * as AiIcons from 'react-icons/ai';
 import * as SiIcons from "react-icons/si";
 import * as BsIcons from "react-icons/bs";
 
-export const SidebarData = [
+
+export const SidebarData =  [
   {
     title: 'Home',
     path: "/",
@@ -22,7 +23,7 @@ export const SidebarData = [
       },
       {
         title: 'Thêm nhân khẩu',
-        path: '/demographic/demographic-add',
+        path: '/demographic-add',
         icon: <AiIcons.AiFillPlusCircle />
       }
     ]
@@ -30,7 +31,19 @@ export const SidebarData = [
   {
     title: 'Quản lý hộ khẩu',
     path: '/household',
-    icon: <FaIcons.FaAddressBook />
+    icon: <FaIcons.FaAddressBook />,
+    subNav: [
+      {
+        title: 'Danh sách hộ khẩu',
+        path: '/household',
+        icon: <FaIcons.FaListAlt />
+      },
+      {
+        title: 'Thêm hộ khẩu',
+        path: 'household-add',
+        icon: <AiIcons.AiFillPlusCircle />,
+      }
+    ]
   },
   {
     title: 'Quản lý tạm trú',

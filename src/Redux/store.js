@@ -5,6 +5,7 @@ import privilegeReducer from "./privilegeSlice";
 import tabernacleReducer from "./tabernacleSlice";
 import absentReducer from "./absentSlice";
 import revenueReducer from "./revenueSlice";
+import detailroomSlice from "./detailRoomSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     tabernacle: tabernacleReducer,
     absent: absentReducer,
     revenue: revenueReducer,
+    isDetailVisible: detailroomSlice.reducer
   },
 });

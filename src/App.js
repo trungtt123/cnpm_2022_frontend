@@ -10,6 +10,7 @@ import DemographicPage from "./pages/DemographicPage";
 import HouseholdPage from "./pages/HouseholdPage";
 import TabernaclePage from "./pages/Tabernacle/TabernaclePage";
 import AbsentPage from "./pages/Absent/AbsentPage";
+import HouseholdAddPage from "./pages/HouseholdAddPage";
 import { Triangle } from "react-loader-spinner";
 import About from "./pages/About";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +25,14 @@ import ChangePasswordPage from "./pages/ChangePasswordPage";
 import RevenuePage from "./pages/Income/RevenuePage";
 import RevenueItem from "./pages/Income/RevenueItem";
 import RevenueHouse from "./pages/Income/RevenueHouse";
+import AddRoomModal from "./components/AddRoomModals";
+import HouseholdPutPage from "./pages/HouseholdPutPage";
+import DemographicAddPage from "./pages/DemographicAddPage";
+
 function App() {
+
+  
+
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -33,7 +41,7 @@ function App() {
   const [isSidebar, setIsSidebar] = useState(true);
 
   const [component, setComponent] = useState();
-  
+
   const getCurrentView = () => {
     if (isAuthenticated === false) {
       return <UnAuth />;
@@ -49,7 +57,10 @@ function App() {
             <Switch>
             <Route path="/" exact component={DashBoard} />
             <Route path="/demographic" exact component={DemographicPage} />
+            <Route path="/demographic-add" exact component={DemographicAddPage} />
             <Route path="/household" exact component={HouseholdPage} />
+            <Route path="/household-add" exact component={HouseholdAddPage} />
+            <Route path="/:id/edit" exact component={HouseholdPutPage} />
             <Route path="/tabernacle"exact component={TabernaclePage}/>
             <Route path="/absent" exact component={AbsentPage}/>
             <Route path="/login" exact component={Login} />
