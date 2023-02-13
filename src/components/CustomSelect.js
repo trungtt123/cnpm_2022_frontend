@@ -7,6 +7,7 @@ export const CustomSelect = ({
   field,
   form,
   options,
+  defaultValue,
   isMulti = false
 }) => {
   const onChange = option => {
@@ -36,6 +37,7 @@ export const CustomSelect = ({
       placeholder={placeholder}
       options={options}
       isMulti={isMulti}
+      defaultValue = {defaultValue}
     />
     </div>
   )

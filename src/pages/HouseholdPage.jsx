@@ -29,7 +29,6 @@ const HouseholdPage = () => {
     dispatch(detailroomSlice.actions.isSelectedIdChange(Id));
   }
 
-  const isDetailVisible = useSelector(isDetailVisibleSelector)
   const [dataHouseHold, setDataHouseHold] = useState([]);
   const [isDelete, setIsDelete] = useState(false);
 
@@ -95,8 +94,8 @@ const HouseholdPage = () => {
       renderCell: (param) =>
         <div>
           <DeleteIcon onClick={() => {
-            //deleteHouseHold(param.row.maHoKhau);
-            //setIsDelete (!isDelete);
+            deleteHouseHold(param.row.maHoKhau);
+            setIsDelete (!isDelete);
             console.log()
           }
           } />

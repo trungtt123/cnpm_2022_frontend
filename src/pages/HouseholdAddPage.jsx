@@ -5,11 +5,32 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../components/Header";
 import { addHouseHold } from "../Services/API/householdService";
 import CustomSelect from "../components/CustomSelect";
-import { useLocation, Link } from "react-router-dom";
+import axios from "../setups/custom_axios";
+import { useState, useEffect } from "react";
 const HouseholdAddPage = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const location = useLocation();
-  const  state = location.state;
+
+  const [dataNhanKhau, setDataNhanKhau] = useState([]);
+
+  useEffect(
+    async () => {
+      try {
+        const response = await axios.get(`/nhan-khau/danh-sach-nhan-khau-chua-co-ho-khau`)
+        const datas = response.data;
+        const datamap = datas.map((data) => {
+          const label = data.hoTen + " " + data.maNhanKhau
+          return {
+            label,
+            value: data.maNhanKhau
+          }
+        })
+        setDataNhanKhau(datamap);
+      } catch (error) {
+        console.log(error);
+      }
+    }, []
+  )
+
   return (
     <Box m="20px">
       <Header title="Tạo hộ khẩu" />
@@ -95,7 +116,6 @@ const HouseholdAddPage = () => {
                 fullWidth
                 variant="filled"
                 type='date'
-
                 label="Ngày cấp"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -109,7 +129,7 @@ const HouseholdAddPage = () => {
                 fullWidth
                 className="custom-select"
                 name="danhSachNhanKhau"
-                options={state}
+                options={dataNhanKhau}
                 component={CustomSelect}
                 placeholder="Danh sách mã nhân khẩu "
                 isMulti={true}

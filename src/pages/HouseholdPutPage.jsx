@@ -5,8 +5,11 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../components/Header";
 import CustomSelect from "../components/CustomSelect";
 import { useLocation, Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, version } from "react";
 import axios from "../setups/custom_axios";
+import { formatDate } from "../Services/API/formatDateService";
+import Select from 'react-select';
+import { putHouseHold } from "../Services/API/putHouseHoldService";
 
 
 const HouseholdAddPage = () => {
@@ -18,36 +21,56 @@ const HouseholdAddPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [initialValues, setInitialValues] = useState({
-    maHoKhau: detailHouseholdData.maHoKhau,
-    diaChiThuongTru: detailHouseholdData.diaChiThuongTru,
-    noiCap: detailHouseholdData.noiCap,
-    ngayCap: detailHouseholdData.ngayCap,
-    danhSachNhanKhau: [],
   })
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const response = await axios.get(`ho-khau?maHoKhau=${id}`)
-        setdetailHouseHoldData(response.data);
-        setInitialValues ({
-          maHoKhau: detailHouseholdData.maHoKhau,
-          diaChiThuongTru: detailHouseholdData.diaChiThuongTru,
-          noiCap: detailHouseholdData.noiCap,
-          ngayCap: detailHouseholdData.ngayCap,
-          danhSachNhanKhau: []
-        })
-        setIsLoading (false);
-      } catch (error) {
-        console.log(error);
-      };
+  useEffect(async () => {
+    try {
+      const response = await axios.get(`ho-khau?maHoKhau=${id}`)
+      setdetailHouseHoldData(response.data);
+      setInitialValues({
+        maHoKhau: response.data.maHoKhau,
+        diaChiThuongTru: response.data.diaChiThuongTru,
+        noiCap: response.data.noiCap,
+        ngayCap: response.data.ngayCap,
+        danhSachNhanKhau: response.data.danhSachNhanKhau.map((data) => {
+          const label = data.hoTen + " " + data.maNhanKhau
+          return {
+            label,
+            value: data.maNhanKhau
+          }
+        }),
+        version: response.data.version,
+      })
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
     }
-    console.log (initialValues)
-    fetch();
+    console.log(initialValues)
   }, [])
 
+  const [dataNhanKhau, setDataNhanKhau] = useState([]);
+
+  useEffect(
+    async () => {
+      try {
+        const response = await axios.get(`/nhan-khau/danh-sach-nhan-khau-chua-co-ho-khau`)
+        const datas = response.data;
+        const datamap = datas.map((data) => {
+          const label = data.hoTen + " " + data.maNhanKhau
+          return {
+            label,
+            value: data.maNhanKhau
+          }
+        })
+        setDataNhanKhau(datamap);
+      } catch (error) {
+        console.log(error);
+      }
+    }, []
+  )
+
   if (isLoading) {
-    return  <div>Loading....</div>
+    return <div>Loading....</div>
   }
 
   return (
@@ -63,15 +86,18 @@ const HouseholdAddPage = () => {
             "diaChiThuongTru": values.diaChiThuongTru,
             "noiCap": values.noiCap,
             "ngayCap": values.ngayCap,
-            "danhSachNhanKhau": values.danhSachNhanKhau
+            "danhSachNhanKhau": values.danhSachNhanKhau,
+            "version" : initialValues.version,
           })
-          //   addHouseHold({
-          //     "maHoKhau": values.maHoKhau,
-          //     "diaChiThuongTru": values.diaChiThuongTru,
-          //     "noiCap": values.noiCap,
-          //     "ngayCap": values.ngayCap,
-          //     "danhSachNhanKhau": values.danhSachNhanKhau
-          //   })
+            putHouseHold({
+              "maHoKhau": values.maHoKhau,
+            "diaChiThuongTru": values.diaChiThuongTru,
+            "noiCap": values.noiCap,
+            "ngayCap": values.ngayCap,
+            "danhSachNhanKhau": values.danhSachNhanKhau,
+            "version" : initialValues.version,
+            })
+
         }}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
@@ -95,12 +121,12 @@ const HouseholdAddPage = () => {
             >
               <TextField
                 fullWidth
-                variant="filled"
+                variant="standard"
                 type="text"
                 label="Mã hộ khẩu"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.maHoKhau}
+                value={id}
                 name="maHoKhau"
                 error={!!touched.maHoKhau && !!errors.maHoKhau}
                 helperText={touched.maHoKhau && errors.maHoKhau}
@@ -139,27 +165,27 @@ const HouseholdAddPage = () => {
                 label="Ngày cấp"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.ngaycap}
+                value={values.ngayCap}
                 name="ngayCap"
                 error={!!touched.ngayCap && !!errors.ngayCap}
                 helperText={touched.ngayCap && errors.ngayCap}
                 sx={{ gridColumn: "span 4" }}
               />
-              <Field
-                fullWidth
-                className="custom-select"
-                name="danhSachNhanKhau"
-                options={state}
-                component={CustomSelect}
-                placeholder="Danh sách mã nhân khẩu "
-                isMulti={true}
-                sx={{ width: "400px" }}
 
-              />
+              <div style={{ width: '500px' }}>
+                <Select
+                  name="danhSachNhanKhau"
+                  options={dataNhanKhau}
+                  component={CustomSelect}
+                  placeholder="Danh sách mã nhân khẩu "
+                  isMulti={true}
+                  defaultValue={values.danhSachNhanKhau}
+                />
+              </div>
 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button  color="secondary" variant="contained" onClick={() => console.log(detailHouseholdData)}>
+              <Button type = "submit" color="secondary" variant="contained" onClick={() => console.log(values.danhSachNhanKhau)}>
                 Thay đổi hộ khẩu
               </Button>
             </Box>
@@ -175,7 +201,7 @@ const checkoutSchema = yup.object().shape({
   maHoKhau: yup.string().required("required"),
   diaChiThuongTru: yup.string().required("required"),
   noiCap: yup.string().required("required"),
-  ngayCap: yup.string().required("required"),
+  ngayCap: yup.date().required("required"),
   danhSachNhanKhau: yup.array().required("required")
 });
 
