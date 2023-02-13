@@ -1,22 +1,27 @@
-import { Box, Button, TextField, Typography, Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
+import { Box, Button, TextField, Typography, Dialog, DialogTitle, DialogContent, IconButton, InputAdornment } from "@mui/material";
 import { tokens } from "../../theme";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SaveAsIcon from '@mui/icons-material/SaveAs';
+import SearchIcon from '@mui/icons-material/Search';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import { useEffect, useState, } from "react";
 import { useDispatch } from "react-redux";
 import { fetchAllAbsents } from "../../Redux/absentSlice";
 import CloseIcon from '@mui/icons-material/Close';
 import absentService from "../../Services/API/absentService";
-import { DesktopDatePicker, LocalizationProvider,} from "@mui/x-date-pickers";
+import { DesktopDatePicker, LocalizationProvider, } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import axios from "../../setups/custom_axios";
 
 const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [date, setDate] = useState(dayjs(new Date()));
+  const [name, setName] = useState("");
+  const [canCuoc, setCanCuoc] = useState("");
+  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const handleFormSubmit = (values) => {
     absentService.postAbsent({
@@ -26,12 +31,17 @@ const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
     }).then(mes => {
       alert(mes.message);
       setOpenPopup(!openPopup);
+      setName("");
+      setCanCuoc("");
+      setShow(false);
       dispatch(fetchAllAbsents());
     })
   };
   const handleOnChange = (newValue) => {
     setDate(newValue);
   }
+  useEffect(() => {
+  }, [name, canCuoc, show]);
   const initialValues = {
     maNhanKhau: "",
     lyDo: "",
@@ -46,7 +56,10 @@ const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
             {"ĐĂNG KÝ TẠM VẮNG"}
           </Typography>
           <IconButton aria-label="close" onClick={() => {
-            setOpenPopup(!openPopup)
+            setOpenPopup(!openPopup);
+            setName("");
+            setCanCuoc("");
+            setShow(false);
           }}>
             <CloseIcon></CloseIcon>
           </IconButton>
@@ -88,6 +101,25 @@ const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
                     error={!!touched.maNhanKhau && !!errors.maNhanKhau}
                     helperText={touched.maNhanKhau && errors.maNhanKhau}
                     sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => {
+                            if(!(!!touched.maNhanKhau && !!errors.maNhanKhau)){
+                              axios.get(`/nhan-khau?maNhanKhau=${values.maNhanKhau}`).then(mes => {
+                                //alert(JSON.stringify(mes.data));
+                                setName(mes.data.hoTen);
+                                setCanCuoc(mes.data.canCuocCongDan);
+                                setShow(true);
+                              })
+                            }
+                            
+                          }}>
+                            <SearchIcon />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                   <TextField
                     fullWidth
@@ -102,14 +134,41 @@ const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
                     helperText={touched.lyDo && errors.lyDo}
                     sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}
                   />
+                  {show && (
+                    <>
+                      <TextField
+                        fullWidth
+                        variant="filled"
+                        type="text"
+                        label="Họ và tên"
+                        name="hoTen"
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        value={name}
+                        sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}
+                      ></TextField>
+                      <TextField
+                        fullWidth
+                        variant="filled"
+                        type="text"
+                        label="Căn cước công dân"
+                        name="canCuocCongDan"
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                        value={canCuoc}
+                        sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}
+                      ></TextField></>
+                  )}
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DesktopDatePicker label="Date desktop"
-                    inputFormat="MM/DD/YYYY"
-                    onChange={handleOnChange}
-                    value={date}
-                    renderInput={(params) => <TextField {...params} />}>
+                    <DesktopDatePicker label="Thời điểm bắt đầu"
+                      inputFormat="DD/MM/YYYY"
+                      onChange={handleOnChange}
+                      value={date}
+                      renderInput={(params) => <TextField {...params} />}>
 
-                  </DesktopDatePicker>
+                    </DesktopDatePicker>
                   </LocalizationProvider>
                 </Box>
                 <Box display="flex" justifyContent="end" mt="20px" >

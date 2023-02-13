@@ -155,7 +155,7 @@ const EditAbsent = ({ openInPopup, setOpenInPopup, data }) => {
                   />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DesktopDatePicker label="Thời điểm bắt đầu"
-                    inputFormat="MM/DD/YYYY"
+                    inputFormat="DD/MM/YYYY"
                     onChange={handleOnChange}
                     name="thoiHan"
                     value={newDate}

@@ -21,6 +21,9 @@ import { ColorModeContext, useMode } from "./theme";
 import { Switch } from "react-router-dom";
 import NotfoundPage from "./pages/NotfoundPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
+import RevenuePage from "./pages/Income/RevenuePage";
+import RevenueItem from "./pages/Income/RevenueItem";
+import RevenueHouse from "./pages/Income/RevenueHouse";
 function App() {
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -52,6 +55,9 @@ function App() {
             <Route path="/login" exact component={Login} />
             <Route path="/about" exact component={About} />
             <Route path="/change-password" exact component={ChangePasswordPage} />
+            <Route path="/revenue" exact component={RevenuePage} />
+            <Route path="/revenue-item" exact component={RevenueItem}/>
+            <Route path="/revenue-house" exact component={RevenueHouse}/>
             <Route path="*" component={NotfoundPage} />
           </Switch>
           </main>

@@ -74,7 +74,7 @@ const AbsentPage = () => {
       field: "chiTiet",
       headerName: "",
       flex: 1,
-      renderCell: (param) => <EditButton maTamVang={param.row.maTamVang} openInPopup={openInPopup} setOpenInPopup={setOpenInPopup} data = {data}/>,
+      renderCell: (param) => <EditButton maTamVang={param.row.maTamVang} openInPopup={openInPopup} setOpenInPopup={setOpenInPopup}/>,
     }
   ]);
   return (

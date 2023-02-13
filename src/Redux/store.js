@@ -4,6 +4,7 @@ import authReducer from "./authSlice";
 import privilegeReducer from "./privilegeSlice";
 import tabernacleReducer from "./tabernacleSlice";
 import absentReducer from "./absentSlice";
+import revenueReducer from "./revenueSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     privilege: privilegeReducer,
     tabernacle: tabernacleReducer,
     absent: absentReducer,
+    revenue: revenueReducer,
   },
 });
