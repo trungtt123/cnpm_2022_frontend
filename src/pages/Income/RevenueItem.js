@@ -15,9 +15,11 @@ import CreateRevenue from "./CreateRevenue";
 import EditRevenue from "./EditRevenue";
 import revenueService from "../../Services/API/revenueService";
 import PayRevenue from "./PayRevenue";
+import { useHistory } from "react-router-dom";
 
 const RevenueItem = () => {
     const theme = useTheme();
+    const history = useHistory();
     const colors = tokens(theme.palette.mode);
     const dispatch = useDispatch();
     const revenueItem = useSelector((state) => state.revenue.revenueItem)
@@ -78,13 +80,16 @@ const RevenueItem = () => {
             field: "thanhToan",
             headerName: "Thanh toán",
             flex: 1,
-            renderCell: (param) => {return param.row.soTienDaNop < param.row.soTien && <PayButton  openPopup={openPopup} 
+            renderCell: (param) => {return (param.row.soTienDaNop < param.row.soTien || loaiKhoanThu === 0) && <PayButton  openPopup={openPopup} 
             soTienCanThu={param.row.soTien - param.row.soTienDaNop}
             setOpenPopup={setOpenPopup} maKhoanThuTheoHo={param.row.maKhoanThuTheoHo}/> },
           },
     ]);
       useEffect(() => {
-      }, [revenueItem, isLoadingItem, id]);
+        if (!idKhoanThu){
+            history.push('/revenue');
+        }
+      }, [idKhoanThu]);
     return (
         <Box m="20px">
             <Header

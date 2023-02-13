@@ -10,16 +10,17 @@ import Button from '@mui/material/Button';
 import { useEffect, useMemo, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAllRevenue, setRevenueItemID, setRevenueHouseID } from "../../Redux/revenueSlice";
+import { fetchAllRevenue, setRevenueItemID, setRevenueHouseID, setRevenueItemType } from "../../Redux/revenueSlice";
 import dayjs from "dayjs";
 import CreateRevenue from "./CreateRevenue";
 import EditRevenue from "./EditRevenue";
 import revenueService from "../../Services/API/revenueService";
 import { Link } from "react-router-dom";
 import PayRevenue from "./PayRevenue";
-
+import { useHistory } from "react-router-dom";
 const RevenueHouse = () => {
     const theme = useTheme();
+    const history = useHistory();
     const colors = tokens(theme.palette.mode);
     const dispatch = useDispatch();
     const [openPopup, setOpenPopup] = useState(false);
@@ -27,28 +28,28 @@ const RevenueHouse = () => {
     const revenueHouse = useSelector((state) => state.revenue.revenueHouse);
     const revenueHouseID = useSelector((state) => state.revenue.revenueHouseID);
     const isLoadingHouse = useSelector((state) => state.revenue.isLoadingHouse);
-
+    const [soTienCanThu, setSoTienCanThu] = useState(0);
     const [data, setData] = useState([]);
+    const [maHoKhau, setMaHoKhau] = useState();
 
-    const PayButton = ({ maKhoanThuTheoHo, openPopup, setOpenPopup, maKhoanThu }) => {
+    const PayButton = ({ maKhoanThuTheoHo, openPopup, setOpenPopup, maKhoanThu, soTienCanThu, loaiKhoanThu, maHoKhau }) => {
         const theme = useTheme();
         const colors = tokens(theme.palette.mode);
-    
         return (
-          <Button onClick={() => {
-            dispatch(setRevenueItemID(maKhoanThu));
-            dispatch(setRevenueHouseID(maKhoanThuTheoHo))
-            setOpenPopup(!openPopup);
-          }}
-            startIcon={<ManageAccountsRoundedIcon />}
-            variant="contained"
-            style={{ backgroundColor: colors.greenAccent[700], border: "none" }}>Thanh toán
-          </Button>
+            <Button onClick={() => {
+                dispatch(setRevenueItemID(maKhoanThu));
+                dispatch(setRevenueHouseID(maKhoanThuTheoHo));
+                dispatch(setRevenueItemType(loaiKhoanThu));
+                setMaHoKhau(maHoKhau);
+                setSoTienCanThu(soTienCanThu);
+                setOpenPopup(!openPopup);
+            }}
+                startIcon={<ManageAccountsRoundedIcon />}
+                variant="contained"
+                style={{ backgroundColor: colors.greenAccent[700], border: "none" }}>Thanh toán
+            </Button>
         );
-      }
-
-    useEffect(() => {
-    }, [revenueHouse, isLoadingHouse, revenueHouseID, maKhoanThu]);
+    }
     const columns = useMemo(() => [
         { field: "maKhoanThu", headerName: "Mã khoản thu", flex: 0.5 },
         { field: "maKhoanThuTheoHo", headerName: "Mã khoản thu theo hộ", flex: 1 },
@@ -83,8 +84,12 @@ const RevenueHouse = () => {
             field: "thanhToan",
             headerName: "Thanh toán",
             flex: 1,
-            renderCell: (param) => <PayButton  openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={param.row.maKhoanThuTheoHo} maKhoanThu={param.row.maKhoanThu}/>,
-          },
+            renderCell: (param) => {
+                return (param.row.soTienDaNop < param.row.soTien || param.row.loaiKhoanThu === 0) && <PayButton openPopup={openPopup}
+                    soTienCanThu={param.row.soTien - param.row.soTienDaNop} loaiKhoanThu={param.row.loaiKhoanThu} maHoKhau={param.row.maHoKhau}
+                    setOpenPopup={setOpenPopup} maKhoanThuTheoHo={param.row.maKhoanThuTheoHo} />
+            },
+        },
     ]);
     return (
         <Box m="20px">
@@ -130,7 +135,7 @@ const RevenueHouse = () => {
 
                 }}
             >
-                <PayRevenue openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={revenueHouseID} maKhoanThu ={maKhoanThu}/>
+                <PayRevenue openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={revenueHouseID} maKhoanThu={maKhoanThu} soTienCanThu={soTienCanThu} maHoKhau={maHoKhau} />
                 {isLoadingHouse ? (
                     <div className="loading-container d-flex flex-column align-items-center ustify-content-center">
                         <Triangle

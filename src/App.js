@@ -51,6 +51,12 @@ function App() {
                 <Topbar setIsSidebar={setIsSidebar} />
                 <Switch>
                   <Route path="/" exact component={DashBoard} />
+                  <Route path="/login" exact component={Login} />
+                  <Route path="/about" exact component={About} />
+                  <Route path="/change-password" exact component={ChangePasswordPage} />
+                  <Route path="/revenue" exact component={RevenuePage} />
+                  <Route path="/revenue-item" exact component={RevenueItem} />
+                  <Route path="/revenue-house" exact component={RevenueHouse} />
                   {
                     (user?.roleId === 1 || user?.roleId == 2) && <><Route path="/demographic" exact component={DemographicPage} />
                       <Route path="/household" exact component={HouseholdPage} />
@@ -60,12 +66,6 @@ function App() {
                       <Route path="/absent" exact component={AbsentPage} />
                     </>
                   }
-                  <Route path="/login" exact component={Login} />
-                  <Route path="/about" exact component={About} />
-                  <Route path="/change-password" exact component={ChangePasswordPage} />
-                  <Route path="/revenue" exact component={RevenuePage} />
-                  <Route path="/revenue-item" exact component={RevenueItem} />
-                  <Route path="/revenue-house" exact component={RevenueHouse} />
                   <Route path="*" component={NotfoundPage} />
                 </Switch>
               </main>
