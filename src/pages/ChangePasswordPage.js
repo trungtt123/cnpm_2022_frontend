@@ -34,10 +34,8 @@ export default function ChangePasswordPage() {
         oldPassword,
         newPassword
       });
-      if (res?.message === 'CHANGE_PASSWORD_SUCCESSFULLY') {
-        dispatch(logout());
-        alert('Đổi mật khẩu thành công! Đăng nhập lại để tiếp tục!');
-      }
+      alert(res?.message);
+      dispatch(logout());
     }
     catch (e) {
       alert('Mật khẩu không đúng!');

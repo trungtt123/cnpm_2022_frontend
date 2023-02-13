@@ -10,9 +10,10 @@ import axios from "../setups/custom_axios";
 import { formatDate } from "../Services/API/formatDateService";
 import Select from 'react-select';
 import { putHouseHold } from "../Services/API/putHouseHoldService";
-
+import { useHistory } from 'react-router-dom';
 
 const HouseholdAddPage = () => {
+  const history = useHistory();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const location = useLocation();
   const state = location.state;
@@ -22,9 +23,9 @@ const HouseholdAddPage = () => {
 
   const [initialValues, setInitialValues] = useState({
   })
-
   useEffect(async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(`ho-khau?maHoKhau=${id}`)
       setdetailHouseHoldData(response.data);
       setInitialValues({
@@ -43,7 +44,7 @@ const HouseholdAddPage = () => {
       })
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      history.push('/household');
     }
     console.log(initialValues)
   }, [])
