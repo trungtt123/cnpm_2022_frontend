@@ -180,9 +180,7 @@ const checkoutSchema = yup.object().shape({
     .matches(phoneRegExp, "Mã hộ khẩu không hợp lệ")
     .required("Bạn chưa điền thông tin"),
   canCuocCongDan: yup
-    .string()
-    .matches(phoneRegExp, "Số căn cước công dân không hợp lệ")
-    .required("Bạn chưa điền thông tin"),
+    .string().required("Bạn chưa điền thông tin"),
   diaChiThuongTru: yup.string().required("Bạn chưa điền thông tin"),
   diaChiTamTru: yup.string().required("Bạn chưa điền thông tin"),
 });

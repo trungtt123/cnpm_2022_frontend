@@ -1,6 +1,6 @@
 import axios from "../../setups/custom_axios";
 const getListTabernacle = () => {
-    return axios.get("/tam-tru/danh-sach-tam-tru?index=1&limit=10");
+    return axios.get("/tam-tru/danh-sach-tam-tru?");
 }
 const postTabernacle = (data) => {
     const {hoTen, diaChiThuongTru, diaChiTamTru, canCuocCongDan} = data;
