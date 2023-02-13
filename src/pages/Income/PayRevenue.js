@@ -123,7 +123,7 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
                                         InputProps={{
                                             readOnly: true,
                                         }}
-                                        value={Math.max(0, values.soTienDaNop - values.soTienCanThu)}
+                                        defaultValue={Math.max(0, values.soTienDaNop - soTienCanThu)}
                                         sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
                                     </TextField>
                                 </Box>
