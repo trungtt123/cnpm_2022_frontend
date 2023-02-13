@@ -26,14 +26,16 @@ const RevenueItem = () => {
     const loaiKhoanThu = useSelector((state) => state.revenue.loaiKhoanThu);
     const [id, setId] = useState(0);
     const [openPopup, setOpenPopup] = useState(false);
+    const [soTienCanThu, setSoTienCanThu] = useState(0);
 
-    const PayButton = ({ maKhoanThuTheoHo, openPopup, setOpenPopup }) => {
+    const PayButton = ({ maKhoanThuTheoHo, openPopup, setOpenPopup, soTienCanThu }) => {
         const theme = useTheme();
         const colors = tokens(theme.palette.mode);
     
         return (
           <Button onClick={() => {
             setId(maKhoanThuTheoHo);
+            setSoTienCanThu(soTienCanThu);
             setOpenPopup(!openPopup);
           }}
             startIcon={<ManageAccountsRoundedIcon />}
@@ -76,7 +78,9 @@ const RevenueItem = () => {
             field: "thanhToan",
             headerName: "Thanh toán",
             flex: 1,
-            renderCell: (param) => <PayButton  openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={param.row.maKhoanThuTheoHo}/>,
+            renderCell: (param) => {return param.row.soTienDaNop < param.row.soTien && <PayButton  openPopup={openPopup} 
+            soTienCanThu={param.row.soTien - param.row.soTienDaNop}
+            setOpenPopup={setOpenPopup} maKhoanThuTheoHo={param.row.maKhoanThuTheoHo}/> },
           },
     ]);
       useEffect(() => {
@@ -125,7 +129,7 @@ const RevenueItem = () => {
 
                 }}
             >
-                <PayRevenue openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={id} maKhoanThu ={idKhoanThu}/>
+                <PayRevenue openPopup={openPopup} setOpenPopup={setOpenPopup} maKhoanThuTheoHo={id} maKhoanThu ={idKhoanThu} soTienCanThu={soTienCanThu}/>
                 {isLoadingItem ? (
                     <div className="loading-container d-flex flex-column align-items-center ustify-content-center">
                         <Triangle

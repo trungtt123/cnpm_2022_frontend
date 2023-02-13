@@ -14,14 +14,15 @@ import { DesktopDatePicker, LocalizationProvider, } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
-const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu }) => {
+const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soTienCanThu }) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
+    const [soTienCanTra, setSoTienCanTra] = useState(0);
     const dispatch = useDispatch();
     const handleFormSubmit = (values) => {
         revenueService.payRevenue({
             maKhoanThuTheoHo: values.maKhoanThuTheoHo,
             tenHoaDon: values.tenHoaDon,
-            soTienDaNop: values.soTienDaNop
+            soTienDaNop: values.soTienDaNop > values.soTienCanThu ? values.soTienCanThu : values.soTienDaNop 
         }).then(mes => {
             alert(mes.message);
             setOpenPopup(!openPopup);
@@ -32,6 +33,7 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu }) =
         maKhoanThuTheoHo: maKhoanThuTheoHo,
         tenHoaDon: "",
         soTienDaNop: 0,
+        soTienCanThu: soTienCanThu,
     };
     return (
         <Dialog open={openPopup} maxWidth="md" style={{ backgroundColor: "transparent" }}
@@ -105,6 +107,15 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu }) =
                                         name="soTienDaNop"
                                         onChange={handleChange}
                                         defaultValue={values.soTienDaNop}
+                                        sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
+                                    </TextField>
+                                    <TextField
+                                        disabled
+                                        variant="filled"
+                                        type = "number"
+                                        label="Số tiền trả lại"
+                                        name="soTienTraLai"
+                                        defaultValue={Math.max(0, values.soTienDaNop - values.soTienCanThu)}
                                         sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
                                     </TextField>
                                 </Box>
