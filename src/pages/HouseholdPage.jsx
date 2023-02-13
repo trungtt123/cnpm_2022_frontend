@@ -7,7 +7,7 @@ import { useTheme } from "@mui/material";
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import detailroomSlice from "../Redux/detailRoomSlice";
@@ -21,37 +21,40 @@ const HouseholdPage = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+
   const handleDetail = () => {
-    dispatch (detailroomSlice.actions.isDetailVisibleChange())
+    dispatch(detailroomSlice.actions.isDetailVisibleChange())
   }
   const handleSelectedId = (Id) => {
-    dispatch (detailroomSlice.actions.isSelectedIdChange(Id));
+    dispatch(detailroomSlice.actions.isSelectedIdChange(Id));
   }
-  
-  const isDetailVisible = useSelector (isDetailVisibleSelector)
-  const [dataHouseHold, setDataHouseHold] = useState ([]);
-  const [isDelete, setIsDelete] = useState (false);
 
-  useEffect (
+  const isDetailVisible = useSelector(isDetailVisibleSelector)
+  const [dataHouseHold, setDataHouseHold] = useState([]);
+  const [isDelete, setIsDelete] = useState(false);
+
+  useEffect(
     async () => {
       try {
-          const response = await axios.get (`/ho-khau/danh-sach-ho-khau`);
-          setDataHouseHold (() => response.data);
+        const response = await axios.get(`/ho-khau/danh-sach-ho-khau`);
+        setDataHouseHold(() => response.data);
       } catch (error) {
-          console.log (error);
+        console.log(error);
       }
 
-      return 
+      return
     }, [isDelete])
-  
-  const columns = useMemo ( () => [
-    { field: "maHoKhau", 
-      headerName: "Mã hộ", 
-      flex: 0.5 
+
+
+  const columns = useMemo(() => [
+    {
+      field: "maHoKhau",
+      headerName: "Mã hộ",
+      flex: 0.5
     },
-    { field: "soThanhVien",
-      headerName: "Số thành viên" ,
+    {
+      field: "soThanhVien",
+      headerName: "Số thành viên",
       flex: 0.5,
     },
     {
@@ -81,7 +84,7 @@ const HouseholdPage = () => {
       renderCell: (param) =>
       {
         const link = param.row.maHoKhau + "/edit";
-        return <Link to = {link}><TrackChangesIcon />  </Link>
+        return <Link to = {link}><TrackChangesIcon /> </Link>
       }
     },
     {
@@ -90,14 +93,14 @@ const HouseholdPage = () => {
       flex: 0.25,
       align: "center",
       renderCell: (param) =>
-      <div>
-       <DeleteIcon onClick = {() => {
-        //deleteHouseHold(param.row.maHoKhau);
-        //setIsDelete (!isDelete);
-        console.log  ()
-      }
-        } />
-      </div>
+        <div>
+          <DeleteIcon onClick={() => {
+            //deleteHouseHold(param.row.maHoKhau);
+            //setIsDelete (!isDelete);
+            console.log()
+          }
+          } />
+        </div>
     },
     /// 
     {
@@ -106,12 +109,12 @@ const HouseholdPage = () => {
       flex: 0.25,
       align: "center",
       renderCell: (param) =>
-      <div>
-        <VisibilityIcon onClick= {() => {
-          handleSelectedId (param.row.maHoKhau);
-          handleDetail ();
-        }}/>
-      </div>
+        <div>
+          <VisibilityIcon onClick={() => {
+            handleSelectedId(param.row.maHoKhau);
+            handleDetail();
+          }} />
+        </div>
     }
   ]);
 

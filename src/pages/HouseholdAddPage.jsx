@@ -1,22 +1,23 @@
 import { Box, Button, TextField } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, Field } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../components/Header";
 import { addHouseHold } from "../Services/API/householdService";
-import { values } from "lodash";
-
+import CustomSelect from "../components/CustomSelect";
+import { useLocation, Link } from "react-router-dom";
 const HouseholdAddPage = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
+  const location = useLocation();
+  const  state = location.state;
   return (
     <Box m="20px">
       <Header title="Tạo hộ khẩu" />
 
-      
+
       <Formik
         onSubmit={(values) => {
-          console.log ({
+          console.log({
             "maHoKhau": values.maHoKhau,
             "diaChiThuongTru": values.diaChiThuongTru,
             "noiCap": values.noiCap,
@@ -28,7 +29,7 @@ const HouseholdAddPage = () => {
             "diaChiThuongTru": values.diaChiThuongTru,
             "noiCap": values.noiCap,
             "ngayCap": values.ngayCap,
-            "danhSachNhanKhau": [15,16,17]
+            "danhSachNhanKhau": values.danhSachNhanKhau
           })
         }}
         initialValues={initialValues}
@@ -104,18 +105,16 @@ const HouseholdAddPage = () => {
                 helperText={touched.ngayCap && errors.ngayCap}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
+              <Field
                 fullWidth
-                variant="filled"
-                type='array'
-                label="Danh sách mã nhân khẩu"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.manhankhau}
+                className="custom-select"
                 name="danhSachNhanKhau"
-                error={!!touched.danhSachNhanKhau && !!errors.danhSachNhanKhau}
-                helperText={touched.danhSachNhanKhau && errors.danhSachNhanKhau}
-                sx={{ gridColumn: "span 4" }}
+                options={state}
+                component={CustomSelect}
+                placeholder="Danh sách mã nhân khẩu "
+                isMulti={true}
+                sx={{ width :"400px" }}
+
               />
 
             </Box>
@@ -124,6 +123,7 @@ const HouseholdAddPage = () => {
                 Tạo hộ khẩu mới
               </Button>
             </Box>
+  
           </form>
         )}
       </Formik>
@@ -136,9 +136,9 @@ const checkoutSchema = yup.object().shape({
   diaChiThuongTru: yup.string().required("required"),
   noiCap: yup.string().required("required"),
   ngayCap: yup.string().required("required"),
-  //danhSachNhanKhau: yup.array().required("required")
+  danhSachNhanKhau: yup.array().required("required")
 });
-const initialValues = {
+let initialValues = {
   maHoKhau: "",
   diaChiThuongTru: "",
   noiCap: "",
@@ -147,4 +147,3 @@ const initialValues = {
 };
 
 export default HouseholdAddPage;
-

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -7,8 +7,9 @@ import { tokens } from "../theme";
 import { SidebarData } from './SideBar';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "../setups/custom_axios"
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, data }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -34,8 +35,30 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   console.log("user", user);
+  const [dataNhanKhau, setDataNhanKhau] = useState([]);
+
+  useEffect(
+    async () => {
+      try {
+        const response = await axios.get(`/nhan-khau/danh-sach-nhan-khau-chua-co-ho-khau`)
+        const datas = response.data;
+        const datamap = datas.map((data) => {
+          const label = data.hoTen + " " + data.maNhanKhau
+          return {
+            label,
+            value: data.maNhanKhau
+          }
+        })
+        setDataNhanKhau(datamap);
+      } catch (error) {
+        console.log(error);
+      }
+    }, []
+  )
 
   return (
+    <div>
+
     <Box
       sx={{
         "& .pro-sidebar-inner": {
@@ -55,7 +78,7 @@ const Sidebar = () => {
         },
         minHeight: '609px'
       }}
-     
+
     >
       <ProSidebar collapsed={isCollapsed}  >
         <Menu iconShape="square">
@@ -121,30 +144,54 @@ const Sidebar = () => {
                     title={item.title}
                     icon={item.icon}>
                     {item.subNav.map((itm, indx) => {
-                      return (
-                        <Item key={indx}
-                          to={itm.path}
-                          icon={itm.icon}
-                          title={itm.title}></Item>
-                      );
+                      if (!(itm.path === 'household-add')) {
+                        return (
+                          <Item key={indx}
+                            to={itm.path}
+                            icon={itm.icon}
+                            title={itm.title}></Item>
+                        );
+                      } else {
+                        return (
+                          <Item key={indx}
+                            to={{
+                              pathname: itm.path,
+                              state: dataNhanKhau
+                            }}
+                            data={itm.data}
+                            icon={itm.icon}
+                            title={itm.title}
+                          ></Item>
+                        )
+                      }
                     })}
                   </SubMenu>
                 );
               } else {
-                return (
-                  <Item
-                    title={item.title}
-                    key={index}
-                    to={item.path}
-                    icon={item.icon}
-                  ></Item>
-                );
+                if (!item.data) {
+                  return (
+                    <Item key={index}
+                      to={item.path}
+                      icon={item.icon}
+                      title={item.title}></Item>
+                  );
+                } else {
+                  return (
+                    <Item key={index}
+                      to={item.path}
+                      icon={item.icon}
+                      title={item.title}
+                      data={item.data}
+                    ></Item>
+                  )
+                }
               }
             })}
           </Box>
         </Menu>
       </ProSidebar>
     </Box>
+    </div>
   );
 };
 

@@ -25,7 +25,10 @@ import ChangePasswordPage from "./pages/ChangePasswordPage";
 import AddRoomModal from "./components/AddRoomModals";
 import HouseholdPutPage from "./pages/HouseholdPutPage";
 import DemographicAddPage from "./pages/DemographicAddPage";
+
 function App() {
+
+  
 
   const dispatch = useDispatch();
   const { user, isAuthenticated, isLoading } = useSelector(

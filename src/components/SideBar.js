@@ -4,7 +4,8 @@ import * as AiIcons from 'react-icons/ai';
 import * as SiIcons from "react-icons/si";
 import * as BsIcons from "react-icons/bs";
 
-export const SidebarData = [
+
+export const SidebarData =  [
   {
     title: 'Home',
     path: "/",
@@ -40,7 +41,7 @@ export const SidebarData = [
       {
         title: 'Thêm hộ khẩu',
         path: 'household-add',
-        icon: <AiIcons.AiFillPlusCircle />
+        icon: <AiIcons.AiFillPlusCircle />,
       }
     ]
   },
