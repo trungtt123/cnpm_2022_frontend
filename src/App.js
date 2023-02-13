@@ -72,6 +72,7 @@ function App() {
             <Route path="*" component={NotfoundPage} />
           </Switch>
           </main>
+          <AddRoomModal />
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

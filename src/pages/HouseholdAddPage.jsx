@@ -84,7 +84,7 @@ const HouseholdAddPage = () => {
                 name="maHoKhau"
                 error={!!touched.maHoKhau && !!errors.maHoKhau}
                 helperText={touched.maHoKhau && errors.maHoKhau}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ "& .MuiInputBase-root": {height: 60},  input: { border: "none" }, gridColumn: "span 4", backgroundColor: "#293040" }}
               />
               <TextField
                 fullWidth
@@ -97,7 +97,7 @@ const HouseholdAddPage = () => {
                 name="diaChiThuongTru"
                 error={!!touched.diaChiThuongTru && !!errors.diaChiThuongTru}
                 helperText={touched.diaChiThuongTru && errors.diaChiThuongTru}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ "& .MuiInputBase-root": {height: 60},  input: { border: "none" }, gridColumn: "span 4", backgroundColor: "#293040" }}
               />
               <TextField
                 fullWidth
@@ -110,7 +110,7 @@ const HouseholdAddPage = () => {
                 name="noiCap"
                 error={!!touched.noiCap && !!errors.noiCap}
                 helperText={touched.noiCap && errors.noiCap}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ "& .MuiInputBase-root": {height: 60},  input: { border: "none" }, gridColumn: "span 4", backgroundColor: "#293040" }}
               />
               <TextField
                 fullWidth
@@ -123,7 +123,7 @@ const HouseholdAddPage = () => {
                 name="ngayCap"
                 error={!!touched.ngayCap && !!errors.ngayCap}
                 helperText={touched.ngayCap && errors.ngayCap}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ "& .MuiInputBase-root": {height: 60},  input: { border: "none" }, gridColumn: "span 4", backgroundColor: "#293040" }}
               />
               <Field
                 fullWidth

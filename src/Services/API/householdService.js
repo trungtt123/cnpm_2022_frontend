@@ -20,12 +20,12 @@ export const deleteHouseHold = async HouseHoldId => {
     try {
         const response = await axios.delete(`ho-khau?maHoKhau=${HouseHoldId}`)
         console.log (response)
-
-        if (response.message){
+        alert (response.message);
+        /*if (response.message){
             alert (response.message)
         } else {
             alert ("Xóa thất bại")
-        }
+        }*/
     } catch (error) {
         console.log(error)
     }
