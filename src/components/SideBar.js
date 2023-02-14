@@ -28,7 +28,7 @@ export const SidebarDataAdmin =  [
       },
       {
         title: 'Thêm hộ khẩu',
-        path: 'household-add',
+        path: '/household-add',
         icon: <AiIcons.AiFillPlusCircle />,
       }
     ]
