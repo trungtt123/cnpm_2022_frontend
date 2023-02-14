@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  Modal, Button } from 'antd';
+import { Modal, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { isDetailVisibleSelector, isSelectedIdSelector } from '../Redux/selector';
 import detailroomSlice from '../Redux/detailRoomSlice';
@@ -13,17 +13,17 @@ export default function AddRoomModal() {
 
     const isDetailVisible = useSelector(isDetailVisibleSelector)
     const isSelectedId = useSelector(isSelectedIdSelector)
-    const [detailHouseholdData , setdetailHouseHoldData] = useState ({})
-    const [danhSachNhanKhau, setDanhSachNhanKhau] = useState ([])
+    const [detailHouseholdData, setdetailHouseHoldData] = useState({})
+    const [danhSachNhanKhau, setDanhSachNhanKhau] = useState([])
 
-    useEffect (
-       async () => {
+    useEffect(
+        async () => {
             try {
                 const response = await axios.get(`ho-khau?maHoKhau=${isSelectedId}`)
-                setdetailHouseHoldData ( response.data )
-                setDanhSachNhanKhau (response.data.danhSachNhanKhau);
+                setdetailHouseHoldData(response.data)
+                setDanhSachNhanKhau(response.data.danhSachNhanKhau);
             } catch (error) {
-                console.log (error);
+                console.log(error);
             }
         }, [isDetailVisible, isSelectedId]
     )
@@ -32,20 +32,21 @@ export default function AddRoomModal() {
 
     const handleOk = () => {
 
-        dispatch(detailroomSlice.actions.isDetailVisibleChange())
+        dispatch(detailroomSlice.actions.isDetailVisibleChange());
+        alert(JSON.stringify(detailHouseholdData));
     };
 
     const handleCancel = () => {
-    
+
         dispatch(detailroomSlice.actions.isDetailVisibleChange())
-      };
+    };
 
     return (
         <div>
             <Modal
                 visible={isDetailVisible}
                 onOk={handleOk}
-                width = {700}
+                width={700}
                 onCancel={handleCancel}
                 footer={[
                     <Button key="back" onClick={handleOk}>
@@ -62,24 +63,39 @@ export default function AddRoomModal() {
                 </Descriptions>
 
                 {
-                    danhSachNhanKhau.map ((nhanKhau) => {
+                    danhSachNhanKhau.map((nhanKhau) => {
                         return (
-                            
-                <Descriptions title= "Nhân khẩu 1">
-                    <Descriptions.Item label="Mã nhân khẩu" span={3}>{nhanKhau.maNhanKhau}</Descriptions.Item>
-                    <Descriptions.Item label="Họ và tên">{nhanKhau.hoTen}</Descriptions.Item>
-                    <Descriptions.Item label="Căn cước">{nhanKhau.canCuocCongDan}</Descriptions.Item>
-                    <Descriptions.Item label="Ngày sinh">{formatDate(nhanKhau.ngaySinh)}</Descriptions.Item>
-                    <Descriptions.Item label="Nơi sinh">{nhanKhau.noiSinh}</Descriptions.Item>
-                    <Descriptions.Item label="Dân tộc">{nhanKhau.danToc}</Descriptions.Item>
-                    <Descriptions.Item label="Nghề nghiệp">{nhanKhau.ngheNghiep}</Descriptions.Item>
-                    <Descriptions.Item label="Trạng thái">{nhanKhau.trangThai}</Descriptions.Item>
-                    <Descriptions.Item label="Quan hệ với chủ hộ">{nhanKhau.quanHe}</Descriptions.Item>
-                    <Descriptions.Item label="Ghi chú">{nhanKhau.ghiChu}</Descriptions.Item>
-                    <Descriptions title=" "></Descriptions>
-                </Descriptions>
+
+                            <Descriptions title="Nhân khẩu">
+                                <Descriptions.Item label="Mã nhân khẩu" span={3}>{nhanKhau.maNhanKhau}</Descriptions.Item>
+                                <Descriptions.Item label="Họ và tên">{nhanKhau.hoTen}</Descriptions.Item>
+                                <Descriptions.Item label="Căn cước">{nhanKhau.canCuocCongDan}</Descriptions.Item>
+                                <Descriptions.Item label="Ngày sinh">{formatDate(nhanKhau.ngaySinh)}</Descriptions.Item>
+                                <Descriptions.Item label="Nơi sinh">{nhanKhau.noiSinh}</Descriptions.Item>
+                                <Descriptions.Item label="Dân tộc">{nhanKhau.danToc}</Descriptions.Item>
+                                <Descriptions.Item label="Nghề nghiệp">{nhanKhau.ngheNghiep}</Descriptions.Item>
+                                <Descriptions.Item label="Trạng thái">{nhanKhau.trangThai}</Descriptions.Item>
+                                <Descriptions.Item label="Quan hệ với chủ hộ">{nhanKhau.quanHe}</Descriptions.Item>
+                                <Descriptions.Item label="Ghi chú">{nhanKhau.ghiChu}</Descriptions.Item>
+                                <Descriptions title=" "></Descriptions>
+                            </Descriptions>
 
                         )
+                    })
+                }
+                {
+                    detailHouseholdData.lichSu.map((item) => {
+                        return (
+                            <Descriptions title="Lịch sử">
+                                <Descriptions.Item label="Mã lịch sử" span={3}>{item.maLichSu}</Descriptions.Item>
+                                <Descriptions.Item label="Nội dung">{item.noiDung}</Descriptions.Item>
+                                <Descriptions.Item label="Ngày tạo">{formatDate(item.createTime)}</Descriptions.Item>
+                                <Descriptions.Item label="Ngày cập nhật">{formatDate(item.updateTime)}</Descriptions.Item>
+                                <Descriptions.Item label="Người tạo">{item.userCreate}</Descriptions.Item>
+                                <Descriptions.Item label="Người cập nhật">{item.userUpdate}</Descriptions.Item>
+                                <Descriptions title=" "></Descriptions>
+                            </Descriptions>
+                        );
                     })
                 }
 
