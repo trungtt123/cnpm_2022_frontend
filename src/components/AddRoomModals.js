@@ -86,7 +86,7 @@ export default function AddRoomModal() {
                 
                 <Descriptions title="Lịch sử">
                 {
-                    detailHouseholdData?.lichSu.map((item) => {
+                    detailHouseholdData?.lichSu?.map((item) => {
                         return (
                             <>
                                 <Descriptions.Item label="Mã lịch sử" span={3}>{item.maLichSu}</Descriptions.Item>

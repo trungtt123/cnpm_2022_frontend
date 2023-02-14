@@ -4,13 +4,9 @@ export const addHouseHold = async newHouseHold => {
     try {
         const response = await axios.post(`/ho-khau`, newHouseHold)
         console.log (response);
-
-        if (response.message){
-            alert (response.message)
-        } else {
-            alert ("Thêm thất bại ")
-        }
+        alert (response.message)
     } catch (error) {
+        alert ("Thêm hộ khẩu thất bại")
         console.log (error);
     }
 }
@@ -27,6 +23,7 @@ export const deleteHouseHold = async HouseHoldId => {
             alert ("Xóa thất bại")
         }*/
     } catch (error) {
+        alert ("Xóa hộ khẩu thất bại")
         console.log(error)
     }
 }

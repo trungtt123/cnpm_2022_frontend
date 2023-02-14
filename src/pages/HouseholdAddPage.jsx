@@ -152,7 +152,7 @@ const HouseholdAddPage = () => {
 };
 
 const checkoutSchema = yup.object().shape({
-  maHoKhau: yup.string().required("required"),
+  maHoKhau: yup.string(),
   diaChiThuongTru: yup.string().required("required"),
   noiCap: yup.string().required("required"),
   ngayCap: yup.string().required("required"),
