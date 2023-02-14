@@ -20,6 +20,11 @@ const HouseholdAddPage = () => {
   const { id } = useParams();
   const [detailHouseholdData, setdetailHouseHoldData] = useState({})
   const [isLoading, setIsLoading] = useState(true);
+	const [selectOption, setSelectOption] = useState ([])
+	 const handleSelect = (selectedOption) => {
+    setSelectOption(selectedOption);
+   // console.log(`Option selected:`, selectedOption);
+  };
 
   const [initialValues, setInitialValues] = useState({
   })
@@ -87,7 +92,7 @@ const HouseholdAddPage = () => {
             "diaChiThuongTru": values.diaChiThuongTru,
             "noiCap": values.noiCap,
             "ngayCap": values.ngayCap,
-            "danhSachNhanKhau": values.danhSachNhanKhau,
+            "danhSachNhanKhau": selectOption,
             "version" : initialValues.version,
           })
             putHouseHold({
@@ -95,7 +100,7 @@ const HouseholdAddPage = () => {
             "diaChiThuongTru": values.diaChiThuongTru,
             "noiCap": values.noiCap,
             "ngayCap": values.ngayCap,
-            "danhSachNhanKhau": values.danhSachNhanKhau.map((nhankhau) => {
+            "danhSachNhanKhau": selectOption.map((nhankhau) => {
               return nhankhau.value;
             }),
             "version" : initialValues.version,
@@ -183,6 +188,7 @@ const HouseholdAddPage = () => {
                   placeholder="Danh sách mã nhân khẩu "
                   isMulti={true}
                   defaultValue={values.danhSachNhanKhau}
+									onChange ={handleSelect}
                 />
               </div>
 
