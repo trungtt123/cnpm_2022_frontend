@@ -6,6 +6,7 @@ import detailroomSlice from '../Redux/detailRoomSlice';
 import { Descriptions } from 'antd';
 import axios from '../setups/custom_axios';
 import { formatDate } from '../Services/API/formatDateService';
+import { flexbox } from '@mui/system';
 
 
 
@@ -13,8 +14,9 @@ export default function AddRoomModal() {
 
     const isDetailVisible = useSelector(isDetailVisibleSelector)
     const isSelectedId = useSelector(isSelectedIdSelector)
-    const [detailHouseholdData, setdetailHouseHoldData] = useState({})
+    const [detailHouseholdData, setdetailHouseHoldData] = useState()
     const [danhSachNhanKhau, setDanhSachNhanKhau] = useState([])
+    console.log(detailHouseholdData);
 
     useEffect(
         async () => {
@@ -33,7 +35,6 @@ export default function AddRoomModal() {
     const handleOk = () => {
 
         dispatch(detailroomSlice.actions.isDetailVisibleChange());
-        alert(JSON.stringify(detailHouseholdData));
     };
 
     const handleCancel = () => {
@@ -55,18 +56,18 @@ export default function AddRoomModal() {
                 ]}
             >
                 <Descriptions title="Thông tin hộ khẩu" >
-                    <Descriptions.Item label="Mã hộ khẩu " span={3}>{detailHouseholdData.maHoKhau}</Descriptions.Item>
+                    <Descriptions.Item label="Mã hộ khẩu " span={3}>{detailHouseholdData?.maHoKhau}</Descriptions.Item>
                     <Descriptions.Item label="Số thành viên">{danhSachNhanKhau.length}</Descriptions.Item>
-                    <Descriptions.Item label="Nơi cấp ">{detailHouseholdData.noiCap}</Descriptions.Item>
-                    <Descriptions.Item label="Ngày cấp">{formatDate(detailHouseholdData.ngayCap)}</Descriptions.Item>
+                    <Descriptions.Item label="Nơi cấp ">{detailHouseholdData?.noiCap}</Descriptions.Item>
+                    <Descriptions.Item label="Ngày cấp">{formatDate(detailHouseholdData?.ngayCap)}</Descriptions.Item>
                     <Descriptions title=" "></Descriptions>
                 </Descriptions>
 
+                <Descriptions title="Nhân khẩu"/>
                 {
                     danhSachNhanKhau.map((nhanKhau) => {
                         return (
-
-                            <Descriptions title="Nhân khẩu">
+                            <Descriptions>
                                 <Descriptions.Item label="Mã nhân khẩu" span={3}>{nhanKhau.maNhanKhau}</Descriptions.Item>
                                 <Descriptions.Item label="Họ và tên">{nhanKhau.hoTen}</Descriptions.Item>
                                 <Descriptions.Item label="Căn cước">{nhanKhau.canCuocCongDan}</Descriptions.Item>
@@ -79,14 +80,15 @@ export default function AddRoomModal() {
                                 <Descriptions.Item label="Ghi chú">{nhanKhau.ghiChu}</Descriptions.Item>
                                 <Descriptions title=" "></Descriptions>
                             </Descriptions>
-
                         )
                     })
                 }
+                
+                <Descriptions title="Lịch sử">
                 {
-                    detailHouseholdData.lichSu.map((item) => {
+                    detailHouseholdData?.lichSu.map((item) => {
                         return (
-                            <Descriptions title="Lịch sử">
+                            <>
                                 <Descriptions.Item label="Mã lịch sử" span={3}>{item.maLichSu}</Descriptions.Item>
                                 <Descriptions.Item label="Nội dung">{item.noiDung}</Descriptions.Item>
                                 <Descriptions.Item label="Ngày tạo">{formatDate(item.createTime)}</Descriptions.Item>
@@ -94,10 +96,11 @@ export default function AddRoomModal() {
                                 <Descriptions.Item label="Người tạo">{item.userCreate}</Descriptions.Item>
                                 <Descriptions.Item label="Người cập nhật">{item.userUpdate}</Descriptions.Item>
                                 <Descriptions title=" "></Descriptions>
-                            </Descriptions>
+                            </>
                         );
                     })
                 }
+                </Descriptions>
 
             </Modal>
         </div >
