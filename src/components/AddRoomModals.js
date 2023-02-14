@@ -65,9 +65,10 @@ export default function AddRoomModal() {
 
                 <Descriptions title="Nhân khẩu"/>
                 {
-                    danhSachNhanKhau.map((nhanKhau) => {
+                    danhSachNhanKhau.map((nhanKhau, indx) => {
+											const title = "Nhân khẩu " + (indx + 1 )
                         return (
-                            <Descriptions>
+                            <Descriptions title = {title}>
                                 <Descriptions.Item label="Mã nhân khẩu" span={3}>{nhanKhau.maNhanKhau}</Descriptions.Item>
                                 <Descriptions.Item label="Họ và tên">{nhanKhau.hoTen}</Descriptions.Item>
                                 <Descriptions.Item label="Căn cước">{nhanKhau.canCuocCongDan}</Descriptions.Item>
