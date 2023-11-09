@@ -31,8 +31,8 @@ const RoomPage = () => {
   const [data, setData] = useState([]);
   const [currentRoom, setCurrentRoom] = useState();
 
-  const handleEdit = (maPhong) => {
-    roomService.getRoom(maPhong).then((result) => {
+  const handleEdit = (maCanHo) => {
+    roomService.getRoom(maCanHo).then((result) => {
       setCurrentRoom(result.data);
       setOpenEditPopup(true);
     }).catch(e => {
@@ -52,12 +52,12 @@ const RoomPage = () => {
 
   const columns = useMemo(() => [
     {
-      field: "maPhong",
+      field: "maCanHo",
       headerName: "Mã phòng",
       flex: 0.5,
     },
     {
-      field: "tenPhong",
+      field: "tenCanHo",
       headerName: "Tên phòng",
       flex: 0.75,
     },
@@ -88,7 +88,7 @@ const RoomPage = () => {
       align: "center",
       renderCell: (param) => {
         // const link = param.row.maHoKhau + "/edit";
-        return <div onClick={() => handleEdit(param.row.maPhong)}><EditIcon /> </div>
+        return <div onClick={() => handleEdit(param.row.maCanHo)}><EditIcon /> </div>
       }
     },
     {
@@ -127,7 +127,7 @@ const RoomPage = () => {
         {openEditPopup && <EditRoom onClose={() => setOpenEditPopup(false)} roomData={currentRoom} onSuccess={() => handleGetListRoom()}/>}
 
         <DataGrid
-          getRowId={(r) => r.maPhong}
+          getRowId={(r) => r.maCanHo}
           rows={data}
           columns={columns}
           components={{ Toolbar: GridToolbar }}

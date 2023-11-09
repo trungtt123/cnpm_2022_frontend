@@ -69,6 +69,7 @@ const HouseholdAddPage = () => {
         "version": initialValues.version,
       }).then((result) => {
         toast(result.message);
+        handleGetData();
       }).catch(e =>
         toast(e.response.message))
     }
@@ -95,7 +96,7 @@ const HouseholdAddPage = () => {
       const response = await axios.get(`ho-khau?maHoKhau=${id}`)
       setdetailHouseHoldData(response.data);
       console.log(response.data);
-      setRoomId(response.data.maPhong.toString());
+      setRoomId(response.data.maCanHo.toString());
       setXeArr(response.data.danhSachXe);
       setInitialValues({
         maHoKhau: response.data.maHoKhau,
@@ -109,7 +110,7 @@ const HouseholdAddPage = () => {
             value: data.maNhanKhau
           }
         }),
-        maPhong: response.data.maPhong,
+        maCanHo: response.data.maCanHo,
         version: response.data.version,
       })
       setIsLoading(false);
@@ -119,13 +120,13 @@ const HouseholdAddPage = () => {
     roomService.getListRoom().then((result) => {
       const datas = result.data;
       const datamap = datas.map((data) => {
-        const label = data.tenPhong;
+        const label = data.tenCanHo;
         return {
           label,
-          value: data.maPhong.toString()
+          value: data.maCanHo.toString()
         }
       })
-      console.log('datamap phong', datamap);
+      console.log('datamap canHo', datamap);
       setDataPhong(datamap);
     }).catch(e => {
       console.log(e);
@@ -253,8 +254,8 @@ const HouseholdAddPage = () => {
                     onChange={(e) => setRoomId(e.target.value)}
                     value={roomId} style={{ height: 40, width: 100, border: '1px solid #ccc', borderRadius: 5 }}>
                     <option value={""}>Chọn căn hộ</option>
-                    {dataPhong?.map((phong, index) => {
-                      return <option key={index} value={phong.value}>{phong.label}</option>
+                    {dataPhong?.map((canHo, index) => {
+                      return <option key={index} value={canHo.value}>{canHo.label}</option>
                     })}
                   </select>
                 </div>
@@ -301,7 +302,7 @@ const HouseholdAddPage = () => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button startIcon={<SaveAsIcon />}
-                type="submit" color="secondary" variant="contained" onClick={() => console.log(values.maPhong)}>
+                type="submit" color="secondary" variant="contained" onClick={() => console.log(values.maCanHo)}>
                 Lưu
               </Button>
             </Box>

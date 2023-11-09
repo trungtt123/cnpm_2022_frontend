@@ -13,8 +13,8 @@ const updateHouseHold = async (maHoKhau, { diaChiThuongTru, noiCap, ngayCap, dan
     });
 }
 
-const addRoomToHouseHold = async (maHoKhau, maPhong) => {
-    return await axios.post(`/ho-khau/add-phong-to-ho-khau?mahokhau=${maHoKhau}&maphong=${maPhong}`);
+const addRoomToHouseHold = async (maHoKhau, maCanHo) => {
+    return await axios.post(`/ho-khau/add-can-ho-to-ho-khau?mahokhau=${maHoKhau}&maCanHo=${maCanHo}`);
 }
 
 const addXeToHouseHold = async ({ tenXe, bienKiemSoat, maLoaiXe, maHoKhau, moTa }) => {
