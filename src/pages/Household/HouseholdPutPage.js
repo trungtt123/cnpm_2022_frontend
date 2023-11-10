@@ -59,6 +59,7 @@ const HouseholdAddPage = () => {
       }).catch(e => {
   
       })
+      console.log('selectOption', selectOption);
       householdService.updateHouseHold(values.maHoKhau, {
         "diaChiThuongTru": values.diaChiThuongTru,
         "noiCap": values.noiCap,
@@ -71,7 +72,7 @@ const HouseholdAddPage = () => {
         toast(result.message);
         handleGetData();
       }).catch(e =>
-        toast(e.response.message))
+        toast(e?.response?.data?.message))
     }
   }
   const [initialValues, setInitialValues] = useState({});
@@ -98,18 +99,20 @@ const HouseholdAddPage = () => {
       console.log(response.data);
       setRoomId(response.data.maCanHo.toString());
       setXeArr(response.data.danhSachXe);
+      const datamapNhanKhau = response.data.danhSachNhanKhau.map((data) => {
+        const label = data.hoTen + " " + data.maNhanKhau
+        return {
+          label,
+          value: data.maNhanKhau
+        }
+      })
+      setSelectOption(datamapNhanKhau);
       setInitialValues({
         maHoKhau: response.data.maHoKhau,
         diaChiThuongTru: response.data.diaChiThuongTru,
         noiCap: response.data.noiCap,
         ngayCap: dayjs(response.data.ngayCap).format('YYYY-MM-DD'),
-        danhSachNhanKhau: response.data.danhSachNhanKhau.map((data) => {
-          const label = data.hoTen + " " + data.maNhanKhau
-          return {
-            label,
-            value: data.maNhanKhau
-          }
-        }),
+        danhSachNhanKhau: datamapNhanKhau,
         maCanHo: response.data.maCanHo,
         version: response.data.version,
       })
@@ -118,7 +121,9 @@ const HouseholdAddPage = () => {
       history.push('/household');
     }
     roomService.getListRoom().then((result) => {
-      const datas = result.data;
+      let datas = result.data;
+      console.log(datas);
+      datas = datas.filter(o => !o.maHoKhau || o.maHoKhau === id)
       const datamap = datas.map((data) => {
         const label = data.tenCanHo;
         return {
@@ -136,7 +141,7 @@ const HouseholdAddPage = () => {
   const [dataPhong, setDataPhong] = useState([]);
   const handleRemoveXe = (maXe) => {
 
-    let text = "Bạn có chắc chắn muốn xóa xe này không?";
+    let text = "Bạn chắc chắn muốn xóa?";
     if (!window.confirm(text)) {
       return
     }
@@ -144,7 +149,7 @@ const HouseholdAddPage = () => {
       toast(result.message);
       handleGetData();
     }).catch(e => {
-      toast(e.response.data.message);
+      toast(e?.response?.data?.message);
     })
   }
   useEffect(() => {
@@ -251,9 +256,9 @@ const HouseholdAddPage = () => {
                 </div>
                 <div>
                   <select
-                    onChange={(e) => setRoomId(e.target.value)}
+                    onChange={(e) => setRoomId(+e.target.value)}
                     value={roomId} style={{ height: 40, width: 100, border: '1px solid #ccc', borderRadius: 5 }}>
-                    <option value={""}>Chọn căn hộ</option>
+                    <option value={"-1"}>Chọn căn hộ</option>
                     {dataPhong?.map((canHo, index) => {
                       return <option key={index} value={canHo.value}>{canHo.label}</option>
                     })}
@@ -261,7 +266,7 @@ const HouseholdAddPage = () => {
                 </div>
                 <div style={{ width: '60vh', marginBottom: 10, marginTop: 10 }}>
 
-                  <table class="custom-table">
+                  <table className="custom-table">
                     <thead>
                       <tr>
                         <th>Mã xe</th>
@@ -309,7 +314,7 @@ const HouseholdAddPage = () => {
           </form>
         )}
       </Formik>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </Box>
   );
 };

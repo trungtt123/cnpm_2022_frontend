@@ -30,19 +30,7 @@ const removeXe = async (maXe) => {
 }
 
 export const deleteHouseHold = async HouseHoldId => {
-    try {
-        const response = await axios.delete(`ho-khau?maHoKhau=${HouseHoldId}`)
-        console.log(response)
-        alert(response.message);
-        /*if (response.message){
-            alert (response.message)
-        } else {
-            alert ("Xóa thất bại")
-        }*/
-    } catch (error) {
-        alert("Xóa hộ khẩu thất bại")
-        console.log(error)
-    }
+    return await axios.delete(`ho-khau?maHoKhau=${HouseHoldId}`)
 }
 
 const householdService = {

@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditRoom from "./EditRoom";
+import { ToastContainer, toast } from 'react-toastify';
 
 const RoomPage = () => {
 
@@ -38,6 +39,21 @@ const RoomPage = () => {
     }).catch(e => {
       console.log(e);
     })
+  }
+  const handleDeleteRoom = (maCanHo) => {
+    if (window.confirm('Bạn chắc chắn muốn xóa?')) {
+      roomService.getRoom(maCanHo).then((result) => {
+        let currentRoomTmp = result.data;
+        roomService.deleteRoom(maCanHo, currentRoomTmp.version).then((result) => {
+          handleGetListRoom();
+          toast(result.message);
+        }).catch(e => {
+          console.log(e);
+        })
+      }).catch(e => {
+        console.log(e);
+      })
+    }
   }
   const handleGetListRoom = () => {
     roomService.getListRoom().then((result) => {
@@ -98,7 +114,7 @@ const RoomPage = () => {
       align: "center",
       renderCell: (param) =>
         <div>
-          <DeleteIcon onClick={() => { }} />
+          <DeleteIcon onClick={() => handleDeleteRoom(param.row.maCanHo)} />
         </div>
     }
   ]);
@@ -124,8 +140,7 @@ const RoomPage = () => {
         }}
       >
         <RegisterRoom openPopup={openPopup} setOpenPopup={setOpenPopup} onSuccess={() => handleGetListRoom()} />
-        {openEditPopup && <EditRoom onClose={() => setOpenEditPopup(false)} roomData={currentRoom} onSuccess={() => handleGetListRoom()}/>}
-
+        {openEditPopup && <EditRoom onClose={() => setOpenEditPopup(false)} roomData={currentRoom} onSuccess={() => handleGetListRoom()} />}
         <DataGrid
           getRowId={(r) => r.maCanHo}
           rows={data}
