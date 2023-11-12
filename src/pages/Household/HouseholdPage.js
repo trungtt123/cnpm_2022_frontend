@@ -41,7 +41,7 @@ const HouseholdPage = () => {
         toast(result.message);
         getListHoKhau();
       }).catch(e => {
-        toast(e?.response?.message)
+        toast(e?.response?.data?.message ?? "Có lỗi xảy ra");
       })
     }
   }

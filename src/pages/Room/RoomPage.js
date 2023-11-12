@@ -49,6 +49,7 @@ const RoomPage = () => {
           toast(result.message);
         }).catch(e => {
           console.log(e);
+          toast(e?.response?.data?.message);
         })
       }).catch(e => {
         console.log(e);

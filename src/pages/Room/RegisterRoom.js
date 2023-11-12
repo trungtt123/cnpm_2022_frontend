@@ -25,7 +25,7 @@ const RegisterRoom = ({ openPopup, setOpenPopup, onSuccess }) => {
     const [date, setDate] = useState(dayjs(new Date()));
 
     const handleFormSubmit = (values) => {
-        if(window.confirm("Bạn chắc chắn muốn lưu?") == true) {
+        if (window.confirm("Bạn chắc chắn muốn lưu?") == true) {
             roomService.addRoom({
                 tenCanHo: values.tenCanHo,
                 tang: values.tang,
@@ -36,7 +36,7 @@ const RegisterRoom = ({ openPopup, setOpenPopup, onSuccess }) => {
                 setOpenPopup(!openPopup);
                 onSuccess && onSuccess();
             }).catch(e => {
-    
+                toast(e?.response?.data?.message ?? "Có lỗi xảy ra");
             });
         }
     };

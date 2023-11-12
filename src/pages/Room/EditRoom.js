@@ -37,6 +37,7 @@ const EditRoom = ({ roomData, onClose, onSuccess }) => {
                 onClose && onClose();
                 onSuccess && onSuccess();
             }).catch(e => {
+                toast(e?.response?.data?.message);
             });
         }
     };
