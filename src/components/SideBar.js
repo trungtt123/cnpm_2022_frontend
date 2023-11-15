@@ -23,7 +23,7 @@ export const SidebarDataAdmin =  [
       {
         title: 'Căn hộ',
         path: '/room',
-        icon: <AiIcons.AiFillPlusCircle />,
+        icon: <BsIcons.BsHouseDoorFill  />,
       }
     ]
   },
@@ -34,12 +34,12 @@ export const SidebarDataAdmin =  [
       {
         title: 'Nhân khẩu',
         path: '/demographic',
-        icon: <FaIcons.FaListAlt />
+        icon: <BsIcons.BsPersonCheckFill  />
       },
       {
         title: 'Tạm trú',
         path: '/tabernacle',
-        icon: <AiIcons.AiFillPlusCircle />,
+        icon: <BsIcons.BsPersonPlusFill />,
       },
       {
         title: 'Tạm vắng',

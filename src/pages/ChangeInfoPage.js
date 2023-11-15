@@ -42,7 +42,7 @@ export default function ChangeInfoPage() {
   }, [user]);
   return (
     <div>
-      <div style={{ margin: "auto", width: '40%' }}>
+      <div className="input-custome" style={{ margin: "auto", width: '40%' }}>
         <div className="text-center mt-3 mb-3" >
           <h3>CẬP NHẬT THÔNG TIN</h3>
         </div>

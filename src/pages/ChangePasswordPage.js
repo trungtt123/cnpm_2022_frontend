@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../Redux/authSlice";
 import { Button } from "@mui/material";
+import { toast } from "react-toastify";
 export default function ChangePasswordPage() {
 
   const dispatch = useDispatch();
@@ -35,11 +36,11 @@ export default function ChangePasswordPage() {
         oldPassword,
         newPassword
       });
-      alert(res?.message);
+      toast(res?.message);
       dispatch(logout());
     }
     catch (e) {
-      alert('Mật khẩu không đúng!');
+      toast('Đổi mật khẩu thất bại!');
       return;
     }
 
@@ -50,7 +51,7 @@ export default function ChangePasswordPage() {
 
   return (
     <div>
-      <div style={{ margin: "auto", width: '40%' }}>
+      <div className="input-custome" style={{ margin: "auto", width: '40%' }}>
         <div className="text-center mt-3 mb-3" >
           <h3>ĐỔI MẬT KHẨU</h3>
         </div>
