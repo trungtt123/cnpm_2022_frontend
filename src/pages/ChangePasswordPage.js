@@ -4,6 +4,7 @@ import axios from '../setups/custom_axios';
 import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../Redux/authSlice";
+import { Button } from "@mui/material";
 export default function ChangePasswordPage() {
 
   const dispatch = useDispatch();
@@ -102,8 +103,8 @@ export default function ChangePasswordPage() {
               placeholder="Xác nhận mật khẩu mới . . ."
             />
           </div>
-          <button onClick={() => handleSubmit()}
-            className="btn btn-warning" style={{ width: 100, margin: 'auto' }}>Gửi</button>
+          <Button onClick={() => handleSubmit()} variant="contained" color="info"
+           style={{ width: 100, margin: 'auto' }}>Gửi</Button>
         </div>
       </div>
     </div>
