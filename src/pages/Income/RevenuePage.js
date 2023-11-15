@@ -118,7 +118,7 @@ const RevenuePage = () => {
   return (
     <Box m="20px">
       <Header
-        title="DANH SÁCH KHOẢN THU"
+        title="Danh sách khoản thu"
       />
       <Button onClick={() => {
         setOpenPopup(!openPopup);
