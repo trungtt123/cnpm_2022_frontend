@@ -19,15 +19,15 @@ export default function ChangePasswordPage() {
   const handleSubmit = async () => {
 
     if (oldPassword === '') {
-      alert('Hãy nhập password cũ!');
+      toast('Hãy nhập password cũ!');
       return;
     }
     if (newPassword === '') {
-      alert('Hãy nhập password mới!');
+      toast('Hãy nhập password mới!');
       return;
     }
     if (newPassword !== confirmPassword) {
-      alert('Confirm password không chính xác!');
+      toast('Confirm password không chính xác!');
       return;
     }
     try {
