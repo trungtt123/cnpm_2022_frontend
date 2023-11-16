@@ -72,7 +72,7 @@ const RevenueItem = () => {
             headerName: "Tình trạng",
             flex: 1,
             valueGetter: (param) => {
-                if (loaiKhoanThu == 0) return ("Tiền ủng hộ");
+                if (loaiKhoanThu == 0) return ("Tiền phí đóng góp");
                 return ((param.row.soTienDaNop >= param.row.soTien) ? "Đã nộp đủ" : ("Còn thiếu " + (param.row.soTien - param.row.soTienDaNop) + " đồng"));
             },
         },

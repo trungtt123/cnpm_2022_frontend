@@ -93,11 +93,11 @@ const RoomPage = () => {
       headerName: "Mã hộ khẩu",
       flex: 0.5
     },
-    {
-      field: "moTa",
-      headerName: "Mô tả",
-      flex: 0.5,
-    },
+    // {
+    //   field: "moTa",
+    //   headerName: "Mô tả",
+    //   flex: 0.5,
+    // },
     {
       field: "put",
       headerName: "",
