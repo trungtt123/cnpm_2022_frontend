@@ -208,7 +208,7 @@ const HouseholdAddPage = () => {
                   name="maHoKhau"
                   error={!!touched.maHoKhau && !!errors.maHoKhau}
                   helperText={touched.maHoKhau && errors.maHoKhau}
-                  sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}
+                  sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}
                 />
                 <TextField
                   fullWidth
@@ -221,7 +221,7 @@ const HouseholdAddPage = () => {
                   name="diaChiThuongTru"
                   error={!!touched.diaChiThuongTru && !!errors.diaChiThuongTru}
                   helperText={touched.diaChiThuongTru && errors.diaChiThuongTru}
-                  sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}
+                  sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}
                 />
                 <TextField
                   fullWidth
@@ -265,7 +265,7 @@ const HouseholdAddPage = () => {
                   name="canHo"
                   onChange={(e) => setRoomId(+e.target.value)}
                   value={roomId}
-                  sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}>
+                  sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
                   <MenuItem value={"-1"}>None</MenuItem>
                   {dataPhong.map((canHo, index) => {
                     return <MenuItem key={index} value={canHo.value}>{canHo.label}</MenuItem>

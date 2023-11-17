@@ -237,7 +237,7 @@ const CreateRevenue = ({ openPopup, setOpenPopup }) => {
                     onClick={() => { setOpenModal(true) }}
                     startIcon={<FactCheckIcon />}
                     variant="contained"
-                    style={{ backgroundColor: colors.greenAccent[500], border: "none" }}>Tạo khoản thu theo hộ
+                    style={{ backgroundColor: colors.greenAccent[500], border: "none", width: 200 }}>Tạo khoản thu theo hộ
                   </Button>}
                 </Box>
                 <Box display="flex" justifyContent="end" mt="20px" >
