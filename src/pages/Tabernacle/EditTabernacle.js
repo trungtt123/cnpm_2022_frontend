@@ -65,6 +65,7 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                   gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                   sx={{
                     "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                    width: 500
                   }}
                 >
                   <TextField
@@ -78,19 +79,7 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                     name="hoTen"
                     error={!!touched.hoTen && !!errors.hoTen}
                     helperText={touched.hoTen && errors.hoTen}
-                    sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 3" }}
-                  />
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="Mã hộ khẩu tạm trú"
-                    name="maTamTru"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    defaultValue={initialValues.maTamTru}
-                    sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}
+                    sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}
                   />
                   <TextField
                     fullWidth
@@ -103,7 +92,7 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                     name="canCuocCongDan"
                     error={!!touched.canCuocCongDan && !!errors.canCuocCongDan}
                     helperText={touched.canCuocCongDan && errors.canCuocCongDan}
-                    sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 2" }}
+                    sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}
                   />
                   <TextField
                     fullWidth

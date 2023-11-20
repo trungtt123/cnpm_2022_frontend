@@ -187,7 +187,7 @@ const HouseholdAddPage = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
-            <div style={{ display: 'flex', flexDirection: 'row', marginTop: 100 }}>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
               <Box
                 display="grid"
                 gap="30px"
