@@ -39,7 +39,7 @@ const RegisterTabernacle = ({ openPopup, setOpenPopup }) => {
   }
   const handleFormSubmit = (values) => {
     /*alert(JSON.stringify(values, null, 2));*/
-    if (window.confirm("Bạn chắc chắn muốn lưu?")) {
+    if (roomName && window.confirm("Bạn chắc chắn muốn lưu?")) {
       tabernacleService.postTabernacle({
         hoTen: values.hoTen,
         diaChiThuongTru: values.diaChiThuongTru,
@@ -64,8 +64,9 @@ const RegisterTabernacle = ({ openPopup, setOpenPopup }) => {
     // diaChiTamTru: "",
   };
   useEffect(() => {
-    handleGetData()
-  }, [])
+    handleGetData();
+    setRoomName("")
+  }, [openPopup])
   return (
     <Dialog open={openPopup} maxWidth="md" style={{ backgroundColor: "transparent" }}
       sx={{
@@ -167,8 +168,11 @@ const RegisterTabernacle = ({ openPopup, setOpenPopup }) => {
                     name="diaChiTamTru"
                     onChange={(e) => setRoomName(e.target.value)}
                     value={roomName}
+                    error={!!touched.diaChiThuongTru && !roomName}
+                    helperText={touched.diaChiThuongTru && !roomName && "Bạn chưa điền thông tin"}
+                    
                     sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 10" }}>
-                    <MenuItem value={""}>None</MenuItem>
+                    {/* <MenuItem value={""}>None</MenuItem> */}
                     {dataPhong.map((canHo, index) => {
                       return <MenuItem key={index} value={canHo.label}>{canHo.label}</MenuItem>
                     })}

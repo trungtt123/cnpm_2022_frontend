@@ -140,8 +140,11 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                     name="diaChiTamTru"
                     onChange={(e) => setRoomName(e.target.value)}
                     value={roomName}
+                    error={!!touched.diaChiThuongTru && !roomName}
+                    helperText={touched.diaChiThuongTru && !roomName && "Bạn chưa điền thông tin"}
+                    
                     sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
-                    <MenuItem value={""}>None</MenuItem>
+                    {/* <MenuItem value={""}>None</MenuItem> */}
                     {dataPhong.map((canHo, index) => {
                       return <MenuItem key={index} value={canHo.label}>{canHo.label}</MenuItem>
                     })}
@@ -162,7 +165,7 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                     variant="contained" startIcon={<DeleteSweepIcon />}>Xóa
                   </Button>
                   <Button onClick={() => {
-                    if (window.confirm("Bạn chắc chắn muốn lưu?")) {
+                    if (roomName && window.confirm("Bạn chắc chắn muốn lưu?")) {
                       tabernacleService.putTabernacle(data.maTamTru, {
                         hoTen: values.hoTen,
                         diaChiThuongTru: values.diaChiThuongTru,

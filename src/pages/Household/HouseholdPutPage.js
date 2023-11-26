@@ -351,7 +351,7 @@ const HouseholdAddPage = () => {
             </div>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button startIcon={<SaveAsIcon />}
-                type="submit" color="secondary" variant="contained" onClick={() => console.log(values.maCanHo)}>
+                type="submit" color="info" variant="contained" onClick={() => console.log(values.maCanHo)}>
                 Lưu
               </Button>
             </Box>
