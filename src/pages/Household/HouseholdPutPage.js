@@ -333,7 +333,7 @@ const HouseholdAddPage = () => {
               </Box>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <div style={{ width: '500px', marginTop: 20 }}>
+              <div style={{ width: '500px', marginTop: 0 }}>
                 <Select
                   name="danhSachNhanKhau"
                   options={dataNhanKhau.concat(values.danhSachNhanKhau)}
@@ -345,7 +345,7 @@ const HouseholdAddPage = () => {
                 />
 
               </div>
-              <div style={{ marginTop: 25, marginLeft: 10 }}>
+              <div style={{ marginTop: 9, marginLeft: 10 }}>
                 <VisibilityIcon style={{ cursor: 'pointer' }} onClick={() => setShowDetailMember(true)} />
               </div>
             </div>

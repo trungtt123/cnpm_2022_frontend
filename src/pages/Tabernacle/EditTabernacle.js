@@ -107,6 +107,20 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                     helperText={touched.diaChiThuongTru && errors.diaChiThuongTru}
                     sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}
                   />
+                  {/* <TextField
+                  variant="filled"
+                  select
+                  label="Địa chỉ tạm trú"
+                  onBlur={handleBlur}
+                  name="diaChiTamTru"
+                  onChange={(e) => setRoomId(+e.target.value)}
+                  value={""}
+                  sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
+                  <MenuItem value={"-1"}>None</MenuItem>
+                  {dataPhong.map((canHo, index) => {
+                    return <MenuItem key={index} value={canHo.value}>{canHo.label}</MenuItem>
+                  })}
+                </TextField> */}
                   <TextField
                     fullWidth
                     variant="filled"
@@ -136,7 +150,7 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                     variant="contained" startIcon={<DeleteSweepIcon />}>Xóa
                   </Button>
                   <Button onClick={() => {
-                    if(window.confirm("Bạn chắc chắn muốn lưu?")) {
+                    if (window.confirm("Bạn chắc chắn muốn lưu?")) {
                       tabernacleService.putTabernacle(data.maTamTru, {
                         hoTen: values.hoTen,
                         diaChiThuongTru: values.diaChiThuongTru,
@@ -147,6 +161,10 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                         toast(mes.message);
                         setOpenInPopup(!openInPopup);
                         dispatch(fetchAllTabernacles());
+                      }).catch(e => {
+                        if (e.response.data.reason)
+                          toast(e.response.data.reason)
+                        else toast(e.response.data.message)
                       })
                     }
                   }}
@@ -158,7 +176,7 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
             )}
           </Formik>
         </Box>
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </DialogContent>
     </Dialog>
   );

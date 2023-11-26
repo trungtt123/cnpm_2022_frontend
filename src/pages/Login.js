@@ -46,7 +46,7 @@ export default function SignIn() {
             label="Tên đăng nhập"
             name="username"
             autoComplete="username"
-            inputProps={{ minLength: 6 }}
+            inputProps={{ minLength: 5 }}
             sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, "& .MuiInputLabel-asterisk" : {display: "none"} }}
             autoFocus
           />
