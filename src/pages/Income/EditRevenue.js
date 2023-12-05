@@ -60,7 +60,7 @@ const EditRevenue = ({ openInPopup, setOpenInPopup, data }) => {
         loaiKhoanThu: data.loaiKhoanThu,
         ghiChu: data.ghiChu,
         thoiGianBatDau: dayjs(data.thoiGianBatDau),
-        thoiGianBatDau: dayjs(data.thoiGianKetThuc),
+        thoiGianKetThuc: dayjs(data.thoiGianKetThuc),
         tongCanThu: data.tongCanThu,
         tongDaThu: data.tongDaThu
     };

@@ -1,113 +1,136 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import axios from '../setups/custom_axios';
+import { Box, Button, TextField } from "@mui/material";
+import { Formik } from "formik";
+import * as yup from "yup";
+import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { useDispatch, useSelector } from "react-redux";
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from "../setups/custom_axios";
 import { logout } from "../Redux/authSlice";
-import { Button } from "@mui/material";
-import { toast } from "react-toastify";
-export default function ChangePasswordPage() {
 
+
+const ChangePasswordPage = () => {
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState('');
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const { user, isAuthenticated, isLoading } = useSelector(
+  const { user } = useSelector(
     (state) => state.auth
   );
-  const handleSubmit = async () => {
-
-    if (oldPassword === '') {
-      toast('Hãy nhập password cũ!');
-      return;
+  const handleFormSubmit = (values) => {
+    /*alert(JSON.stringify(values, null, 2));*/
+    if ((values.newPassword === values.confirmPassword) && window.confirm("Bạn chắc chắn muốn đổi mật khẩu?")) {
+      axios.put('/change-password', {
+        userName: values?.userName,
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword
+      }).then(mes => {
+        toast(mes.message);
+        dispatch(logout());
+      }).catch(e => {
+        toast(e.response.data.reason ?? e.response.data.message ?? "Có lỗi xảy ra")
+      })
     }
-    if (newPassword === '') {
-      toast('Hãy nhập password mới!');
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      toast('Confirm password không chính xác!');
-      return;
-    }
-    try {
-      var res = await axios.put('/change-password', {
-        userName: user?.userName,
-        oldPassword,
-        newPassword
-      });
-      toast(res?.message);
-      dispatch(logout());
-    }
-    catch (e) {
-      toast('Đổi mật khẩu thất bại!');
-      return;
-    }
-
-  }
-  useEffect(() => {
-
-  }, []);
-
+  };
+  const initialValues = {
+    userName: user?.userName,
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  };
   return (
-    <div>
-      <div className="input-custome" style={{ margin: "auto", width: '40%' }}>
-        <div className="text-center mt-3 mb-3" >
-          <h3>ĐỔI MẬT KHẨU</h3>
-        </div>
-        <div className="content-body row">
-          <div className="form-group">
-            <label>
-              Tên đăng nhập (<span className="text-danger">*</span>)
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              value={user?.userName}
-              disabled
-            />
-          </div>
-
-          <div className="form-group">
-            <label>
-              Mật khẩu cũ (<span className="text-danger">*</span>)
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              placeholder="Nhập mật khẩu cũ . . ."
-            />
-          </div>
-          <div className="form-group">
-            <label>
-              Mật khẩu mới (<span className="text-danger">*</span>)
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Nhập mật khẩu mới . . ."
-            />
-          </div>
-          <div className="form-group">
-            <label>
-              Xác nhận mật khẩu mới (<span className="text-danger">*</span>)
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Xác nhận mật khẩu mới . . ."
-            />
-          </div>
-          <Button onClick={() => handleSubmit()} variant="contained" color="info"
-           style={{ width: 100, margin: 'auto' }}>Gửi</Button>
-        </div>
+    <div style={{ margin: "auto", width: '500px' }}>
+      <div className="text-center mt-3 mb-3" >
+        <h3>ĐỔI MẬT KHẨU</h3>
       </div>
+
+      <Formik
+        onSubmit={handleFormSubmit}
+        initialValues={initialValues}
+        validationSchema={checkoutSchema}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Box
+              display="grid"
+              gap="30px"
+              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              sx={{
+                "& > div": { gridColumn: "span 4" },
+                width: 500
+              }}
+            >
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Tên đăng nhập"
+                onBlur={handleBlur}
+                value={values.userName}
+                name="userName"
+                sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 10" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="password"
+                label="Mật khẩu cũ"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.oldPassword}
+                name="oldPassword"
+                error={!!touched.oldPassword && !!errors.oldPassword}
+                helperText={touched.oldPassword && errors.oldPassword}
+                sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 10" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="password"
+                label="Mật khẩu mới"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.newPassword}
+                name="newPassword"
+                error={!!touched.newPassword && !!errors.newPassword}
+                helperText={touched.newPassword && errors.newPassword}
+                sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 10" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="password"
+                label="Xác nhận mật khẩu mới"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.confirmPassword}
+                name="confirmPassword"
+                error={!!touched.confirmPassword && (!!errors.confirmPassword || values.newPassword != values.confirmPassword)}
+                helperText={touched.confirmPassword && (errors.confirmPassword || (values.newPassword != values.confirmPassword && "Xác nhận mật khẩu không đúng"))}
+                sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 10" }}
+              />
+            </Box>
+            <Box display="flex" justifyContent="end" mt="20px" >
+              <Button
+                type="submit" color="secondary" variant="contained" startIcon={<SaveAsIcon />}>
+                Lưu
+              </Button>
+            </Box>
+          </form>
+        )}
+      </Formik>
     </div>
   );
-}
+};
+
+const checkoutSchema = yup.object().shape({
+  oldPassword: yup.string().required("Bạn chưa điền thông tin").min(5, "Mật khẩu có ít nhất 5 ký tự"),
+  newPassword: yup.string().required("Bạn chưa điền thông tin").min(5, "Mật khẩu có ít nhất 5 ký tự"),
+  confirmPassword: yup.string().required("Bạn chưa điền thông tin").min(5, "Mật khẩu có ít nhất 5 ký tự")
+});
+
+export default ChangePasswordPage;

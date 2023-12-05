@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import tabernacleService from "../../Services/API/tabernacleService";
 import { fetchAllTabernacles } from "../../Redux/tabernacleSlice";
 import { useDispatch } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import roomService from "../../Services/API/roomService";
 
@@ -207,7 +207,7 @@ const checkoutSchema = yup.object().shape({
     .matches(phoneRegExp, "Mã hộ khẩu không hợp lệ")
     .required("Bạn chưa điền thông tin"),
   canCuocCongDan: yup
-    .string().required("Bạn chưa điền thông tin"),
+    .string().required("Bạn chưa điền thông tin").max(12, "Căn cước công dân không được quá 12 ký tự"),
   diaChiThuongTru: yup.string().required("Bạn chưa điền thông tin"),
   // diaChiTamTru: yup.string().required("Bạn chưa điền thông tin"),
 });

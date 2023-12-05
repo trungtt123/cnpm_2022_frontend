@@ -1,25 +1,19 @@
-import { Box, Button, TextField, Typography, Dialog, DialogTitle, DialogContent, IconButton, MenuItem } from "@mui/material";
-import { tokens } from "../../theme";
+import { Box, Button, TextField, Typography, Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SaveAsIcon from '@mui/icons-material/SaveAs';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import { useEffect, useRef, useState, } from "react";
+import { useState, } from "react";
 import { useDispatch } from "react-redux";
-import { fetchAllRevenue, fetchRevenueItem, fetchAllRevenueHouse } from "../../Redux/revenueSlice";
+import { fetchRevenueItem, fetchAllRevenueHouse } from "../../Redux/revenueSlice";
 import CloseIcon from '@mui/icons-material/Close';
 import revenueService from "../../Services/API/revenueService";
 import { useSelector } from "react-redux";
-import { DesktopDatePicker, LocalizationProvider, } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soTienCanThu, maHoKhau }) => {
     const isNonMobile = useMediaQuery("(min-width:600px)");
-    const [soTienCanTra, setSoTienCanTra] = useState(0);
     const [soTienDaNop, setSoTienDaNop] = useState(0);
     const loaiKhoanThu = useSelector((state) => state.revenue.loaiKhoanThu);
     const dispatch = useDispatch();
@@ -153,8 +147,6 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
 
     );
 };
-
-const idRegEXp = /^\d+$/;
 
 const checkoutSchema = yup.object().shape({
     tenHoaDon: yup.string().required("Bạn chưa điền thông tin"),

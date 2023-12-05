@@ -1,11 +1,8 @@
-import { Box, Button, TextField, Typography, Dialog, DialogTitle, DialogContent, IconButton, InputAdornment, MenuItem } from "@mui/material";
-import { tokens } from "../../theme";
+import { Box, Button, TextField, Typography, Dialog, DialogTitle, DialogContent, IconButton, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SaveAsIcon from '@mui/icons-material/SaveAs';
-import SearchIcon from '@mui/icons-material/Search';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import { useEffect, useState, } from "react";
 import { useDispatch } from "react-redux";
 import { fetchAllAbsents } from "../../Redux/absentSlice";
@@ -15,7 +12,7 @@ import { DesktopDatePicker, LocalizationProvider, } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import axios from "../../setups/custom_axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
@@ -154,8 +151,6 @@ const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
 
   );
 };
-
-const idRegEXp = /^\d+$/;
 
 const checkoutSchema = yup.object().shape({
   lyDo: yup.string().required("Bạn chưa điền thông tin"),

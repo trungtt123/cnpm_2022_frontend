@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import axios from '../setups/custom_axios';
 import { useDispatch, useSelector } from "react-redux";
 
-import { loadUser, logout } from "../Redux/authSlice";
+import { loadUser } from "../Redux/authSlice";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
 export default function ChangeInfoPage() {
