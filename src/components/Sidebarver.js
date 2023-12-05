@@ -100,17 +100,18 @@ const Sidebar = () => {
             >
               {!isCollapsed && (
                 <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  ml="10px"
+                  style={{textAlign: 'center'}}
+                  // display="flex"
+                  // // justifyContent="space-between"
+                  // alignItems="center"
+                  // ml="10px"
                 >
                   <Typography variant="h3" color={colors.grey[100]} style={{fontSize: 22}}>
                     QUẢN LÝ CHUNG CƯ
                   </Typography>
-                  <IconButton style={{zIndex: 1000}} onClick={() => setIsCollapsed(!isCollapsed)}>
+                  {/* <IconButton style={{zIndex: 1000}} onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
-                  </IconButton>
+                  </IconButton> */}
                 </Box>
               )}
             </MenuItem>
