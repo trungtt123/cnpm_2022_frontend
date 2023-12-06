@@ -259,8 +259,7 @@ const EditDemographic = ({ openInPopup, setOpenInPopup, data }) => {
 
 const checkoutSchema = yup.object().shape({
     hoTen: yup.string().required("Bạn chưa điền thông tin"),
-    canCuocCongDan: yup
-        .string().required("Bạn chưa điền thông tin").max(12, "Căn cước công dân không được quá 12 ký tự"),
+    canCuocCongDan: yup.string().required("Bạn chưa điền thông tin").max(12, "Căn cước công dân không được quá 12 ký tự"),
     noiSinh: yup.string().required("Bạn chưa điền thông tin"),
     danToc: yup.string().required("Bạn chưa điền thông tin"),
     ngheNghiep: yup.string().required("Bạn chưa điền thông tin"),

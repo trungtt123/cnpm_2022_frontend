@@ -39,7 +39,24 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
     })
   }
   const handleFormSubmit = (values) => {
-    console.log(values);
+    console.log('roomName', roomName);
+    if (roomName && window.confirm("Bạn chắc chắn muốn lưu?")) {
+      tabernacleService.putTabernacle(data.maTamTru, {
+        hoTen: values.hoTen,
+        diaChiThuongTru: values.diaChiThuongTru,
+        diaChiTamTru: roomName.toString(),
+        canCuocCongDan: values.canCuocCongDan,
+        version: data.version,
+      }).then(mes => {
+        toast(mes.message);
+        setOpenInPopup(!openInPopup);
+        dispatch(fetchAllTabernacles());
+      }).catch(e => {
+        if (e.response.data.reason)
+          toast(e.response.data.reason)
+        else toast(e.response.data.message)
+      })
+    }
   };
   const initialValues = {
     hoTen: data.hoTen,
@@ -164,25 +181,7 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
                     style={{ backgroundColor: colors.redAccent[600], marginRight: 10 }}
                     variant="contained" startIcon={<DeleteSweepIcon />}>Xóa
                   </Button>
-                  <Button onClick={() => {
-                    if (roomName && window.confirm("Bạn chắc chắn muốn lưu?")) {
-                      tabernacleService.putTabernacle(data.maTamTru, {
-                        hoTen: values.hoTen,
-                        diaChiThuongTru: values.diaChiThuongTru,
-                        diaChiTamTru: roomName.toString(),
-                        canCuocCongDan: values.canCuocCongDan,
-                        version: data.version,
-                      }).then(mes => {
-                        toast(mes.message);
-                        setOpenInPopup(!openInPopup);
-                        dispatch(fetchAllTabernacles());
-                      }).catch(e => {
-                        if (e.response.data.reason)
-                          toast(e.response.data.reason)
-                        else toast(e.response.data.message)
-                      })
-                    }
-                  }}
+                  <Button 
                     type="submit" color="secondary" variant="contained" startIcon={<SaveAsIcon />}>
                     Lưu
                   </Button>
@@ -202,10 +201,6 @@ const phoneRegExp =
 
 const checkoutSchema = yup.object().shape({
   hoTen: yup.string().required("Bạn chưa điền thông tin"),
-  maTamTru: yup
-    .string()
-    .matches(phoneRegExp, "Mã hộ khẩu không hợp lệ")
-    .required("Bạn chưa điền thông tin"),
   canCuocCongDan: yup
     .string().required("Bạn chưa điền thông tin").max(12, "Căn cước công dân không được quá 12 ký tự"),
   diaChiThuongTru: yup.string().required("Bạn chưa điền thông tin"),
