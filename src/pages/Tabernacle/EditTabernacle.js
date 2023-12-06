@@ -196,9 +196,6 @@ const EditTabernacle = ({ openInPopup, setOpenInPopup, data }) => {
   );
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
 const checkoutSchema = yup.object().shape({
   hoTen: yup.string().required("Bạn chưa điền thông tin"),
   canCuocCongDan: yup

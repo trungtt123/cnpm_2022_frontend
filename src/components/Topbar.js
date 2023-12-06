@@ -20,11 +20,11 @@ const Topbar = () => {
               <Dropdown.Menu>
                 <Dropdown.Item href="/change-info">Cập nhật thông tin</Dropdown.Item>
                 <Dropdown.Item href="/change-password">Đổi mật khẩu</Dropdown.Item>
-                <Dropdown.Item>
-                  <span onClick={() => {
+                <Dropdown.Item onClick={() => {
                     // history.push('/')
                     dispatch(logout());
-                  }}>Đăng xuất</span>
+                  }}>
+                  <span>Đăng xuất</span>
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
