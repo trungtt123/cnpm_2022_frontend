@@ -42,11 +42,15 @@ function NameEditInputCell(props) {
     </StyledTooltip>
   );
 }
+const dataPreUpdate = [];
 
-function renderEditName(params) {
-  return <NameEditInputCell {...params} />;
-}
 const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHouseHold }) => {
+  function renderEditName(params) {
+    const item = dataPreUpdate.find(o => o.id === params.id && o.field === params.field);
+    if (!item) dataPreUpdate.push({id: params.id, field: params.field, error: params.error});
+    else item.error = params.error;
+    return <NameEditInputCell {...params} />;
+  }
   const preProcessEditCellProps = async (params) => {
     const hasError = params.props.value === null || params.props.value < 0;
     return { ...params.props, error: hasError };
@@ -69,13 +73,10 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
       return
     }, []);
     const checkData = () => {
-      console.log(dataHouseHold);
+      console.log(dataPreUpdate);
       let hasError = true;
-      for (const item of dataHouseHold){
-        if (item?.nuoc < 0 || item?.nuoc === null) hasError = false;
-        if (item?.dien < 0 || item?.dien === null) hasError = false;
-        if (item?.internet < 0 || item?.internet === null) hasError = false;
-        if (!hasError) return false;
+      for (const item of dataPreUpdate){
+        if (item.error) return false;
       }
       return true;
     }
