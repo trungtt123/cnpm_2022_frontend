@@ -1,11 +1,57 @@
 import { Box, Button, Typography, Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "../../setups/custom_axios";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridEditInputCell } from "@mui/x-data-grid";
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 
+const StyledBox = styled(Box)(({ theme }) => ({
+  height: 400,
+  width: '100%',
+  '& .MuiDataGrid-cell--editable': {
+    // backgroundColor: theme.palette.mode === 'dark' ? '#fff' : 'rgb(217 243 190)',
+    '& .MuiInputBase-root': {
+      height: '100%',
+    },
+  },
+  '& .Mui-error': {
+    backgroundColor: `rgb(126,10,15, ${theme.palette.mode === 'dark' ? 0 : 0.1})`,
+    color: theme.palette.mode === 'dark' ? '#ff4343' : '#750f0f',
+  },
+}));
+
+let promiseTimeout;
+
+
+const StyledTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
+  },
+}));
+
+function NameEditInputCell(props) {
+  const { error } = props;
+  return (
+    <StyledTooltip open={!!error} title={"Số tiền không hợp lệ"}>
+      <GridEditInputCell {...props} />
+    </StyledTooltip>
+  );
+}
+
+function renderEditName(params) {
+  return <NameEditInputCell {...params} />;
+}
 const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHouseHold }) => {
+  const preProcessEditCellProps = async (params) => {
+    const hasError = params.props.value === null || params.props.value < 0;
+    return { ...params.props, error: hasError };
+  };
+
   useEffect(
     async () => {
       try {
@@ -22,7 +68,17 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
 
       return
     }, []);
-
+    const checkData = () => {
+      console.log(dataHouseHold);
+      let hasError = true;
+      for (const item of dataHouseHold){
+        if (item?.nuoc < 0 || item?.nuoc === null) hasError = false;
+        if (item?.dien < 0 || item?.dien === null) hasError = false;
+        if (item?.internet < 0 || item?.internet === null) hasError = false;
+        if (!hasError) return false;
+      }
+      return true;
+    }
   const columns = useMemo(() => [
     { field: "maHoKhau", headerName: "Mã hộ khẩu", flex: 0.5 },
     {
@@ -30,21 +86,28 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
       headerName: "Tiền điện",
       flex: 1,
       type: "number",
+      preProcessEditCellProps,    
       editable: true,
+      
+      renderEditCell: renderEditName,
     },
     {
       field: "nuoc",
       headerName: "Tiền nước",
       flex: 1,
       type: "number",
+      preProcessEditCellProps,    
       editable: true,
+      renderEditCell: renderEditName,
     },
     {
       field: "internet",
       headerName: "Tiền internet",
       flex: 1,
       type: "number",
+      preProcessEditCellProps,   
       editable: true,
+      renderEditCell: renderEditName,
     },
   ]);
 
@@ -54,8 +117,13 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
     return newRow;
   };
 
-  const handleProcessRowUpdateError = React.useCallback((error) => {
-    // setSnackbar({ children: error.message, severity: 'error' });
+  const handleProcessRowUpdateError = (error) => {
+    console.log({ children: error.message, severity: 'error' });
+  }
+  useEffect(() => {
+    return () => {
+      clearTimeout(promiseTimeout);
+    };
   }, []);
 
   return <Dialog open={openModal} maxWidth="md" style={{ backgroundColor: "transparent" }}>
@@ -79,6 +147,7 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
           "margin-bottom": "1em"
         }
       }}>
+        <StyledBox>
         <DataGrid
           getRowId={(row) => row.id}
           rows={dataHouseHold}
@@ -87,11 +156,12 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
           onProcessRowUpdateError={handleProcessRowUpdateError}
           experimentalFeatures={{ newEditingApi: true }}
         />
+        </StyledBox>
       </Box>
       <Box display="flex" justifyContent="end" mt="20px" >
         <Button color="secondary" variant="contained" startIcon={<SaveAsIcon />}
           onClick={() => {
-            if(window.confirm("Bạn chắc chắn muốn lưu?") == true) {
+            if(checkData() && window.confirm("Bạn chắc chắn muốn lưu?") == true) {
               setOpenModal(false);
             }
           }}>
