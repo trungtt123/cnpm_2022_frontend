@@ -5,7 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import CloseIcon from '@mui/icons-material/Close';
 import roomService from "../../Services/API/roomService";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -25,6 +25,7 @@ const RegisterRoom = ({ openPopup, setOpenPopup, onSuccess }) => {
                 setOpenPopup(!openPopup);
                 onSuccess && onSuccess();
             }).catch(e => {
+                console.log("Lỗi");
                 toast(e?.response?.data?.message ?? "Có lỗi xảy ra");
             });
         }
@@ -106,7 +107,7 @@ const RegisterRoom = ({ openPopup, setOpenPopup, onSuccess }) => {
                                     <TextField
                                         fullWidth
                                         variant="filled"
-                                        type="text"
+                                        type="number"
                                         label="Diện tích"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
@@ -153,7 +154,6 @@ const RegisterRoom = ({ openPopup, setOpenPopup, onSuccess }) => {
                         )}
                     </Formik>
                 </Box>
-                <ToastContainer />
             </DialogContent>
         </Dialog>
 
@@ -163,7 +163,7 @@ const RegisterRoom = ({ openPopup, setOpenPopup, onSuccess }) => {
 const checkoutSchema = yup.object().shape({
     tenCanHo: yup.string().required("Bạn chưa điền thông tin"),
     tang: yup.string().required("Bạn chưa điền thông tin"),
-    dienTich: yup.string().required("Bạn chưa điền thông tin")
+    dienTich: yup.number().required("Bạn chưa điền thông tin").min(0, "Diện tích không hợp lệ").max(1000, "Diện tích không hợp lệ")
 });
 
 export default RegisterRoom;

@@ -273,6 +273,7 @@ const checkoutSchemaQuanLy = yup.object().shape({
   .number()
   .typeError("Vui lòng nhập một số")
   .required("Bạn chưa điền thông tin")
+  .min(0, "Số tiền không hợp lệ")
 });
 
 const checkoutSchemaGuiXe = yup.object().shape({
@@ -280,11 +281,13 @@ const checkoutSchemaGuiXe = yup.object().shape({
   xeMay:  yup
   .number()
   .typeError("Vui lòng nhập một số")
-  .required("Bạn chưa điền thông tin"),
+  .required("Bạn chưa điền thông tin")
+  .min(0, "Số tiền không hợp lệ"),
   xeOto:  yup
   .number()
   .typeError("Vui lòng nhập một số")
   .required("Bạn chưa điền thông tin")
+  .min(0, "Số tiền không hợp lệ")
 });
 
 const checkoutSchemaAnother = yup.object().shape({

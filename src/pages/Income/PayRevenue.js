@@ -117,7 +117,7 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
                                         helperText={touched.soTienDaNop && errors.soTienDaNop}
                                         sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
                                     </TextField>
-                                    {
+                                    {/* {
                                         loaiKhoanThu === 1 && <TextField
                                             disabled
                                             variant="filled"
@@ -129,7 +129,7 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
                                             value={Math.max(0, values.soTienDaNop - soTienCanThu)}
                                             sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}>
                                         </TextField>
-                                    }
+                                    } */}
                                 </Box>
                                 <Box display="flex" justifyContent="end" mt="20px" >
                                     <Button
@@ -151,7 +151,6 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
 const checkoutSchema = yup.object().shape({
     tenHoaDon: yup.string().required("Bạn chưa điền thông tin"),
     soTienDaNop: yup.number().required("Bạn chưa điền thông tin").min(0, "Số tiền không hợp lệ"),
-
 });
 
 export default PayRevenue;

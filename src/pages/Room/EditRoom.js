@@ -27,7 +27,7 @@ const EditRoom = ({ roomData, onClose, onSuccess }) => {
                 onClose && onClose();
                 onSuccess && onSuccess();
             }).catch(e => {
-                toast(e?.response?.data?.message);
+                toast(e?.response?.data?.message ?? "Có lỗi xảy ra");
             });
         }
     };
@@ -108,7 +108,7 @@ const EditRoom = ({ roomData, onClose, onSuccess }) => {
                                     <TextField
                                         fullWidth
                                         variant="filled"
-                                        type="text"
+                                        type="number"
                                         label="Diện tích"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
@@ -155,7 +155,6 @@ const EditRoom = ({ roomData, onClose, onSuccess }) => {
                         )}
                     </Formik>
                 </Box>
-                <ToastContainer />
             </DialogContent>
         </Dialog>
 
@@ -165,7 +164,7 @@ const EditRoom = ({ roomData, onClose, onSuccess }) => {
 const checkoutSchema = yup.object().shape({
     tenCanHo: yup.string().required("Bạn chưa điền thông tin"),
     tang: yup.string().required("Bạn chưa điền thông tin"),
-    dienTich: yup.string().required("Bạn chưa điền thông tin")
+    dienTich: yup.number().required("Bạn chưa điền thông tin").min(0, "Diện tích không hợp lệ").max(1000, "Diện tích không hợp lệ")
 });
 
 export default EditRoom;
