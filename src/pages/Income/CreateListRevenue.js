@@ -8,8 +8,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  height: 400,
-  width: '100%',
+  height: '50vh',
+  width: 700,
+  "& .MuiTablePagination-displayedRows, .MuiTablePagination-selectLabel": {
+    "margin-top": "1em",
+    "margin-bottom": "1em"
+  },
   '& .MuiDataGrid-cell--editable': {
     // backgroundColor: theme.palette.mode === 'dark' ? '#fff' : 'rgb(217 243 190)',
     '& .MuiInputBase-root': {
@@ -141,13 +145,6 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
       </div>
     </DialogTitle>
     <DialogContent dividers>
-      <Box m="20px" sx={{
-        height: '50vh', width: 700,
-        "& .MuiTablePagination-displayedRows, .MuiTablePagination-selectLabel": {
-          "margin-top": "1em",
-          "margin-bottom": "1em"
-        }
-      }}>
         <StyledBox>
         <DataGrid
           getRowId={(row) => row.id}
@@ -158,8 +155,7 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
           experimentalFeatures={{ newEditingApi: true }}
         />
         </StyledBox>
-      </Box>
-      <Box display="flex" justifyContent="end" mt="20px" >
+      <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: 20}}>
         <Button color="secondary" variant="contained" startIcon={<SaveAsIcon />}
           onClick={() => {
             if(checkData() && window.confirm("Bạn chắc chắn muốn lưu?") == true) {
@@ -168,7 +164,7 @@ const CreateListRevenue = ({ openModal, setOpenModal, dataHouseHold, setDataHous
           }}>
           Lưu
         </Button>
-      </Box>
+      </div>
     </DialogContent>
   </Dialog>;
 }
