@@ -126,7 +126,7 @@ const RegisterAbsent = ({ openPopup, setOpenPopup }) => {
                     sx={{ "& .MuiInputBase-root": { height: 60 }, input: { border: "none" }, gridColumn: "span 4" }}
                   />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDatePicker label="Thời điểm bắt đầu"
+                    <DesktopDatePicker label="Thời gian bắt đầu"
                       inputFormat="DD/MM/YYYY"
                       onChange={handleOnChange}
                       value={date}

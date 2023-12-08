@@ -37,7 +37,7 @@ const StyledTooltip = styled(({ className, ...props }) => (
 function NameEditInputCell(props) {
   const { error } = props;
   return (
-    <StyledTooltip open={!!error} title={"Số tiền không hợp lệ"}>
+    <StyledTooltip open={!!error} title={(props?.value === null || props?.value === undefined) ? "Bạn chưa điền thông tin" : "Số tiền không hợp lệ"}>
       <GridEditInputCell {...props} />
     </StyledTooltip>
   );
