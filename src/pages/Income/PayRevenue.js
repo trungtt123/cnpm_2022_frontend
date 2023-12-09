@@ -9,7 +9,7 @@ import { fetchRevenueItem, fetchAllRevenueHouse } from "../../Redux/revenueSlice
 import CloseIcon from '@mui/icons-material/Close';
 import revenueService from "../../Services/API/revenueService";
 import { useSelector } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soTienCanThu, maHoKhau }) => {
@@ -22,7 +22,7 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
             revenueService.payRevenue({
                 maKhoanThuTheoHo: values.maKhoanThuTheoHo,
                 tenHoaDon: values.tenHoaDon,
-                soTienDaNop: (loaiKhoanThu === 1 && values.soTienDaNop > values.soTienCanThu) ? values.soTienCanThu : values.soTienDaNop
+                soTienDaNop: values.soTienDaNop
             }).then(mes => {
                 //alert(mes.message);
                 setOpenPopup(!openPopup);
@@ -141,7 +141,6 @@ const PayRevenue = ({ openPopup, setOpenPopup, maKhoanThuTheoHo, maKhoanThu, soT
                         )}
                     </Formik>
                 </Box>
-                <ToastContainer />
             </DialogContent>
         </Dialog>
 
